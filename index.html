@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0b63c4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta property="og:title" content="ゆうまくん、お誕生日おめでとう">
+<meta property="og:description" content="タップしてプレゼントを開けてね">
+<title>ゆうまくんへ · お誕生日おめでとう</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    width: 100%;
+    min-height: 100%;
+    min-height: 100dvh;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+    color: #12304a;
+    background: #0b63c4;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+
+  /* ===== Gift intro ===== */
+  #intro {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 50% 40%, #3a9eef 0%, #0b63c4 55%, #074a96 100%);
+    transition: opacity 0.55s ease, visibility 0.55s ease;
+  }
+  #intro.hiding {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .intro-hint {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 28px;
+    text-shadow: 0 2px 8px rgba(0,40,90,0.35);
+    animation: pulseHint 1.6s ease-in-out infinite;
+  }
+  @keyframes pulseHint {
+    0%, 100% { opacity: 0.75; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-4px); }
+  }
+  .gift-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 20px;
+    position: relative;
+    outline: none;
+  }
+  .gift {
+    width: 160px;
+    height: 150px;
+    position: relative;
+    transform-origin: 50% 80%;
+    animation: giftFloat 2.2s ease-in-out infinite;
+  }
+  @keyframes giftFloat {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+  }
+  .gift.opening {
+    animation: none;
+  }
+  .box-body {
+    position: absolute;
+    left: 20px; right: 20px; bottom: 10px;
+    height: 78px;
+    background: linear-gradient(180deg, #ff6b8a 0%, #e8456a 100%);
+    border-radius: 8px 8px 12px 12px;
+    box-shadow: 0 10px 24px rgba(0,30,70,0.35), inset 0 2px 0 rgba(255,255,255,0.25);
+  }
+  .box-body::before {
+    content: "";
+    position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    width: 28px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, #ffe066 0%, #f0c040 100%);
+    background: linear-gradient(180deg, #ffe066 0%, #f0c040 100%);
+  }
+  .lid {
+    position: absolute;
+    left: 12px; right: 12px; top: 28px;
+    height: 36px;
+    background: linear-gradient(180deg, #ff8aa3 0%, #ff5c7a 100%);
+    border-radius: 8px;
+    box-shadow: 0 4px 0 rgba(180,40,70,0.35), inset 0 2px 0 rgba(255,255,255,0.3);
+    transform-origin: 12% 100%;
+    transition: transform 0.55s cubic-bezier(.2,1.4,.4,1);
+    z-index: 3;
+  }
+  .lid::before {
+    content: "";
+    position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    width: 28px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, #ffe98a 0%, #f0c040 100%);
+  }
+  .bow {
+    position: absolute;
+    left: 50%; top: 6px;
+    transform: translateX(-50%);
+    z-index: 4;
+    font-size: 42px;
+    line-height: 1;
+    filter: drop-shadow(0 3px 2px rgba(0,40,90,0.25));
+    transition: transform 0.5s cubic-bezier(.2,1.4,.4,1), opacity 0.4s ease;
+  }
+  .gift.opening .lid {
+    transform: translateY(-70px) rotate(-28deg);
+  }
+  .gift.opening .bow {
+    transform: translateX(-50%) translateY(-90px) rotate(-18deg) scale(1.15);
+    opacity: 0.95;
+  }
+  .burst {
+    position: absolute;
+    inset: -40px;
+    pointer-events: none;
+    opacity: 0;
+  }
+  .burst.show {
+    animation: burstPop 0.9s ease-out forwards;
+  }
+  @keyframes burstPop {
+    0% { opacity: 0; transform: scale(0.4); }
+    30% { opacity: 1; transform: scale(1.15); }
+    100% { opacity: 0; transform: scale(1.6); }
+  }
+  .burst span {
+    position: absolute;
+    left: 50%; top: 50%;
+    font-size: 28px;
+    animation: particle 0.9s ease-out forwards;
+  }
+  .burst span:nth-child(1) { --dx: -90px; --dy: -70px; }
+  .burst span:nth-child(2) { --dx: 80px; --dy: -75px; }
+  .burst span:nth-child(3) { --dx: -100px; --dy: 10px; }
+  .burst span:nth-child(4) { --dx: 100px; --dy: 5px; }
+  .burst span:nth-child(5) { --dx: -40px; --dy: -100px; }
+  .burst span:nth-child(6) { --dx: 45px; --dy: -95px; }
+  .burst span:nth-child(7) { --dx: -70px; --dy: 50px; }
+  .burst span:nth-child(8) { --dx: 75px; --dy: 55px; }
+  @keyframes particle {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+    25% { opacity: 1; }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.2); }
+  }
+  .bang-text {
+    position: absolute;
+    top: 18%;
+    left: 0; right: 0;
+    text-align: center;
+    color: #fff;
+    font-size: clamp(28px, 9vw, 40px);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-shadow: 0 3px 0 rgba(0,35,80,0.35), 0 8px 20px rgba(0,40,90,0.35);
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none;
+  }
+  .bang-text.show {
+    animation: bangIn 0.7s cubic-bezier(.2,1.3,.4,1) forwards;
+  }
+  @keyframes bangIn {
+    0% { opacity: 0; transform: scale(0.4) translateY(20px); }
+    60% { opacity: 1; transform: scale(1.08) translateY(0); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* ===== Card ===== */
+  #card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    min-height: 100dvh;
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+    pointer-events: none;
+  }
+  #card.revealed {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    animation: cardReveal 0.75s cubic-bezier(.2,.9,.3,1) forwards;
+  }
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(28px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+  .sheet { flex: 1; display: flex; flex-direction: column; min-height: 100dvh; }
+  .hero {
+    background: linear-gradient(165deg, #0b63c4 0%, #2a93e8 45%, #8fd0ff 100%);
+    color: #fff;
+    padding: clamp(72px, 22vw, 110px) 14px 14px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .sky { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  .sky-balloon { position: absolute; line-height: 0; }
+  .sparkles { position: absolute; inset: 0; z-index: 2; pointer-events: none; font-size: 16px; }
+  .sparkles span { position: absolute; }
+  .s1 { top: 10px; left: 8%; } .s2 { top: 18px; right: 10%; } .s3 { top: 40px; left: 48%; }
+  .hero-content {
+    position: relative; z-index: 4;
+    background: rgba(8, 70, 140, 0.34);
+    border-radius: 16px;
+    padding: 14px 12px 16px;
+    border: 1.5px solid rgba(255,255,255,0.35);
+  }
+  .ribbon-cake { font-size: 28px; margin-bottom: 4px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.18em; opacity: 0.95; margin-bottom: 4px; }
+  .congrats {
+    font-size: clamp(28px, 8.5vw, 40px);
+    font-weight: 900; letter-spacing: 0.02em; line-height: 1.2;
+    margin: 4px 0 8px;
+    text-shadow: 0 2px 0 rgba(0,35,80,0.4), 0 8px 16px rgba(0,40,90,0.28);
+  }
+  .to-line { font-size: 14px; font-weight: 600; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .event { font-size: 13.5px; line-height: 1.5; font-weight: 600; }
+  .badge {
+    display: inline-block; margin-top: 10px;
+    background: #fff7d6; color: #0a57ad; font-weight: 800; font-size: 14px;
+    padding: 6px 16px; border-radius: 999px; border: 2px solid #ffe08a;
+  }
+  .body {
+    padding: 14px 14px 24px;
+    display: flex; flex-direction: column; gap: 12px;
+    background: #f7fbff;
+    flex: 1;
+  }
+  .party-row { text-align: center; font-size: 22px; }
+  .card {
+    background: linear-gradient(180deg, #f5faff 0%, #eef6ff 100%);
+    border: 1.5px solid #b7d9f7;
+    border-radius: 14px;
+    padding: 14px 14px;
+    position: relative;
+  }
+  .card .corner { position: absolute; top: -10px; right: 12px; font-size: 18px; }
+  .card h2 {
+    font-size: 15px; letter-spacing: 0.05em; color: #0a57ad;
+    margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px dashed #b7d9f7;
+  }
+  .meta { font-size: 14.5px; line-height: 1.65; }
+  .meta dt { float: left; clear: left; width: 3.6em; color: #5a7a98; font-weight: 700; }
+  .meta dd { margin-left: 3.8em; font-weight: 700; color: #12304a; }
+  .duo {
+    margin-top: 12px;
+    background: linear-gradient(180deg, #fffef5 0%, #fff3b8 100%);
+    border: 3px solid #0a57ad;
+    border-radius: 14px;
+    padding: 12px 12px;
+    font-size: clamp(18px, 5.5vw, 24px);
+    font-weight: 900;
+    color: #064a96;
+    text-align: center;
+    letter-spacing: 0.04em;
+    box-shadow: inset 0 0 0 3px #ffe08a;
+    line-height: 1.35;
+  }
+  .flow { list-style: none; }
+  .flow li {
+    position: relative;
+    padding: 10px 4px 10px 36px;
+    font-size: 14px;
+    line-height: 1.55;
+    border-bottom: 1px dashed #d0e6f8;
+  }
+  .flow li:last-child { border-bottom: none; }
+  .flow .num {
+    position: absolute; left: 0; top: 10px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(145deg, #0a57ad, #3aa0ef);
+    color: #fff; font-size: 13px; font-weight: 800; line-height: 26px; text-align: center;
+  }
+  .flow a { color: #0b5fb8; font-weight: 700; text-decoration: underline; word-break: break-all; display: inline-block; padding: 2px 0; }
+  .flow .links { margin-top: 4px; font-size: 12.5px; line-height: 1.45; }
+  .flow .links .url { color: #5a7a98; font-weight: 500; font-size: 11.5px; }
+  .highlight { color: #0a57ad; font-weight: 800; }
+  .footer {
+    margin-top: auto; padding: 8px 0 4px;
+    font-size: 12px; color: #7a93a8; text-align: center; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <div id="intro">
+    <div class="bang-text" id="bangText">ゆうまくん、<br>お誕生日おめでとう🎉</div>
+    <p class="intro-hint">プレゼントをタップしてね</p>
+    <button class="gift-btn" id="giftBtn" type="button" aria-label="プレゼントを開ける">
+      <div class="gift" id="gift">
+        <div class="burst" id="burst">
+          <span>✨</span><span>🎊</span><span>🎈</span><span>⭐</span>
+          <span>💫</span><span>🎁</span><span>🎀</span><span>🎂</span>
+        </div>
+        <div class="bow">🎀</div>
+        <div class="lid"></div>
+        <div class="box-body"></div>
+      </div>
+    </button>
+  </div>
+
+  <div id="card">
+    <div class="sheet">
+      <div class="hero">
+        <div class="sky"><div class="sky-balloon" style="left:2%;top:2%;opacity:0.9;transform:rotate(-8deg)">
+<svg width="58" height="76" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg0" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#ff6b8a"/><stop offset="100%" stop-color="#ff6b8a" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg0)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div>
+<div class="sky-balloon" style="left:18%;top:1%;opacity:0.86;transform:rotate(6deg)">
+<svg width="48" height="64" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#ffd166"/><stop offset="100%" stop-color="#ffd166" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg1)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div>
+<div class="sky-balloon" style="left:34%;top:3%;opacity:0.88;transform:rotate(-4deg)">
+<svg width="52" height="68" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#7ec8ff"/><stop offset="100%" stop-color="#7ec8ff" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg2)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div>
+<div class="sky-balloon" style="left:50%;top:1%;opacity:0.84;transform:rotate(10deg)">
+<svg width="44" height="58" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#b388ff"/><stop offset="100%" stop-color="#b388ff" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg3)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div>
+<div class="sky-balloon" style="left:66%;top:4%;opacity:0.87;transform:rotate(-10deg)">
+<svg width="50" height="66" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#ff9f43"/><stop offset="100%" stop-color="#ff9f43" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg4)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div>
+<div class="sky-balloon" style="left:82%;top:2%;opacity:0.82;transform:rotate(8deg)">
+<svg width="42" height="56" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#48dbfb"/><stop offset="100%" stop-color="#48dbfb" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg5)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div>
+<div class="sky-balloon" style="left:8%;top:14%;opacity:0.7;transform:rotate(8deg)">
+<svg width="36" height="48" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#ff9ff3"/><stop offset="100%" stop-color="#ff9ff3" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg6)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div>
+<div class="sky-balloon" style="left:28%;top:13%;opacity:0.72;transform:rotate(-6deg)">
+<svg width="38" height="50" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg7" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#1dd1a1"/><stop offset="100%" stop-color="#1dd1a1" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg7)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div>
+<div class="sky-balloon" style="left:48%;top:15%;opacity:0.68;transform:rotate(5deg)">
+<svg width="34" height="46" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg8" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#54a0ff"/><stop offset="100%" stop-color="#54a0ff" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg8)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div>
+<div class="sky-balloon" style="left:68%;top:12%;opacity:0.74;transform:rotate(-5deg)">
+<svg width="40" height="52" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg9" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#ff6b6b"/><stop offset="100%" stop-color="#ff6b6b" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg9)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div>
+<div class="sky-balloon" style="left:88%;top:14%;opacity:0.7;transform:rotate(9deg)">
+<svg width="36" height="48" viewBox="0 0 56 72" aria-hidden="true"><defs><linearGradient id="bg10" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="40%" stop-color="#feca57"/><stop offset="100%" stop-color="#feca57" stop-opacity="0.8"/></linearGradient></defs>
+<ellipse cx="28" cy="24" rx="22" ry="24" fill="url(#bg10)" stroke="rgba(255,255,255,0.9)" stroke-width="1.3"/><ellipse cx="20" cy="16" rx="6" ry="8" fill="#fff" opacity="0.28"/><path d="M18 43 L24 54 L32 54 L38 43" fill="none" stroke="#6b3f22" stroke-width="1.3"/><rect x="23.5" y="54" width="9" height="6.5" rx="1.2" fill="#8B5A2B"/></svg></div></div>
+        <div class="sparkles"><span class="s1">✨</span><span class="s2">✨</span><span class="s3">💫</span></div>
+        <div class="hero-content">
+          <div class="ribbon-cake">🎀 🎂 🎀</div>
+          <div class="eyebrow">HAPPY BIRTHDAY · 22歳</div>
+          <div class="congrats">ゆうまくん、<br>お誕生日おめでとう</div>
+          <div class="to-line">ゆうまくんへ</div>
+          <div class="event">YOASOBI チケット当選のお知らせ<br>2026年11月8日（日）17:00開演 · バンテリンドーム ナゴヤ · 指定席 2枚</div>
+          <span class="badge">✨ 2人で行ける ✨</span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="party-row">🎀 🎂 🎁 ✨ 🎀</div>
+        <div class="card">
+          <span class="corner">🎀</span>
+          <h2>① 当選内容</h2>
+          <dl class="meta">
+            <dt>公演</dt><dd>YOASOBI</dd>
+            <dt>日時</dt><dd>2026/11/8（日）開場14:30 / 開演17:00</dd>
+            <dt>会場</dt><dd>バンテリンドーム ナゴヤ</dd>
+            <dt>席種</dt><dd>指定席 × 2枚</dd>
+          </dl>
+          <div class="duo">🎂 2人で行けるチケットです 🎀</div>
+        </div>
+        <div class="card">
+          <span class="corner">🎂</span>
+          <h2>② 発券の流れ（詳細）</h2>
+          <ol class="flow">
+            <li>
+              <span class="num">1</span>
+              <span class="highlight">2026年11月1日（日）15:00</span> から、チケットぴあの「Myチケット」で発券手続きをし、<strong>MOALA</strong>で電子チケットを受け取ります。紙チケットはありません。入場時はスマホでMOALAの画面を提示します（スクショ不可）。
+              <div class="links">手順ガイド → <a href="https://t.pia.jp/guide/quickticket.jsp">電子チケット(MOALA)で引取</a><br><span class="url">https://t.pia.jp/guide/quickticket.jsp</span></div>
+            </li>
+            <li>
+              <span class="num">2</span>
+              同じ時刻から<strong>同行者への分配</strong>もできます（この公演は分配必須）。同行者にもぴあ会員登録と電話認証が必要です。座席は<strong>指定席2枚</strong>です。
+            </li>
+            <li>
+              <span class="num">3</span>
+              チケット本体は紙ではなく、11/1 15:00以降の<strong>MOALA電子チケット</strong>です。箱に入れる現物チケットはありません。
+            </li>
+          </ol>
+        </div>
+        <div class="footer">✨ ゆうまくん（22歳）への誕生日プレゼント用メモです ✨</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  var opened = false;
+  var btn = document.getElementById('giftBtn');
+  var gift = document.getElementById('gift');
+  var burst = document.getElementById('burst');
+  var bang = document.getElementById('bangText');
+  var intro = document.getElementById('intro');
+  var card = document.getElementById('card');
+
+  function openGift() {
+    if (opened) return;
+    opened = true;
+    gift.classList.add('opening');
+    burst.classList.add('show');
+    bang.classList.add('show');
+    if (navigator.vibrate) try { navigator.vibrate(40); } catch (e) {}
+    setTimeout(function () {
+      intro.classList.add('hiding');
+      card.classList.add('revealed');
+      window.scrollTo(0, 0);
+    }, 850);
+    setTimeout(function () {
+      intro.style.display = 'none';
+    }, 1450);
+  }
+
+  btn.addEventListener('click', openGift);
+  btn.addEventListener('touchend', function (e) {
+    e.preventDefault();
+    openGift();
+  }, { passive: false });
+})();
+</script>
+</body>
+</html>

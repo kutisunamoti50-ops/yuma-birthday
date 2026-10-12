@@ -134,9 +134,12 @@ body.locked{overflow:hidden}
 .fx-heart.on{animation:hrt 1s ease-out both}
 @keyframes hrt{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(120% at 50% 50%)}}
 /* fake end tiny box */
-#tinyBox{position:absolute;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));width:26px;height:26px;margin-left:-13px;font-size:22px;line-height:26px;padding:0;border:none;background:none;opacity:.45;cursor:pointer;transition:all .6s cubic-bezier(.3,1.6,.5,1);z-index:7}
+#replayBtn{position:absolute;top:calc(64px + env(safe-area-inset-top));left:50%;transform:translateX(-50%) rotate(-3deg);padding:14px 26px;font:900 24px "Comic Sans MS","Hiragino Maru Gothic ProN",sans-serif;color:#ffff00;background:linear-gradient(180deg,#ff3cac,#ff0000 50%,#ff9500);border:5px outset #ffd700;border-radius:10px;text-shadow:2px 2px 0 #000;-webkit-text-stroke:1px #000;box-shadow:0 0 0 3px #00ffff,5px 6px 0 3px rgba(0,0,0,.5);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .8s;z-index:8;white-space:nowrap}
+#replayBtn.on{opacity:1;pointer-events:auto;animation:rpl 1.2s ease-in-out infinite alternate}
+@keyframes rpl{to{transform:translateX(-50%) rotate(2deg) scale(1.06)}}
+#tinyBox{position:absolute;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));width:15px;height:15px;margin-left:-7.5px;font-size:13px;line-height:15px;padding:0;border:none;background:none;opacity:.25;cursor:pointer;transition:all .6s cubic-bezier(.3,1.6,.5,1);z-index:7}
 #tinyBox.wig{animation:twg .6s ease-in-out}
-@keyframes twg{25%{transform:rotate(-14deg)}75%{transform:rotate(14deg)}}
+@keyframes twg{25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
 #intro #giftBtn{position:absolute;visibility:hidden}#intro #hint{display:none}
 #tinyBox{transition:all .45s cubic-bezier(.3,1.6,.5,1)!important}
 #tinyBox.s1{width:100px;height:100px;margin-left:-50px;font-size:84px;line-height:100px;bottom:60px;opacity:.85}
@@ -265,7 +268,7 @@ body.locked{overflow:hidden}
 <circle cx="100" cy="13" r="13" fill="#ffffff" stroke="#c4c9d0" stroke-width="2"/><path d="M88 9Q99 -3 112 6" fill="none" stroke="#111" stroke-width="6" stroke-linecap="round"/><path d="M104 7H114V17H106Z" fill="#333"/>
 </svg></div>
 </section>
-<section class="screen hidden" id="endcard"><div id="endBox" style="display:flex;flex-direction:column;gap:14px"></div><button type="button" id="tinyBox" aria-label="箱" style="display:none">🎁</button></section>
+<section class="screen hidden" id="endcard"><div id="endBox" style="display:flex;flex-direction:column;gap:14px"></div><button type="button" id="replayBtn">🔁 もう一度見る</button><button type="button" id="tinyBox" aria-label="箱" style="display:none">🎁</button></section>
 <section class="screen hidden" id="tricky"><p class="line" id="trickyL">……と思った？</p></section>
 
 <section class="screen hidden" id="intro">
@@ -361,8 +364,8 @@ body.locked{overflow:hidden}
   P.noise=function(t,dur,type,f0,f1,v,curveUp){var c=this.ctx,s=c.createBufferSource();s.buffer=this.noiseBuf;s.loop=true;var f=c.createBiquadFilter();f.type=type;f.Q.value=1.2;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+dur);
     var g=c.createGain();if(curveUp){g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v,t+dur);g.gain.linearRampToValueAtTime(0.0001,t+dur+0.05)}else{g.gain.setValueAtTime(v,t);g.gain.setTargetAtTime(0.0001,t+0.02,dur/4)}
     s.connect(f);f.connect(g);g.connect(this.bus);s.start(t);s.stop(t+dur+1)};
-  P.boom=function(t,v){var c=this.ctx,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(38,t+0.5);g.gain.setValueAtTime(v,t);g.gain.setTargetAtTime(0.0001,t+0.05,0.35);o.connect(g);g.connect(this.master);o.start(t);o.stop(t+2.5)};
-  P.bell=function(t,m,v){var c=this.ctx;[[1,1],[2.76,.3],[5.4,.12]].forEach(function(h){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=mtof(m)*h[0];g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(v*h[1],t+0.005);g.gain.setTargetAtTime(0.0001,t+0.01,0.7);o.connect(g);g.connect(this.master);o.start(t);o.stop(t+4)},this)};
+  P.boom=function(t,v,dest){var c=this.ctx,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(38,t+0.5);g.gain.setValueAtTime(v,t);g.gain.setTargetAtTime(0.0001,t+0.05,0.35);o.connect(g);g.connect(dest||this.master);o.start(t);o.stop(t+2.5)};
+  P.bell=function(t,m,v,dest){var c=this.ctx;[[1,1],[2.76,.3],[5.4,.12]].forEach(function(h){var o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=mtof(m)*h[0];g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(v*h[1],t+0.005);g.gain.setTargetAtTime(0.0001,t+0.01,0.7);o.connect(g);g.connect(dest||this.master);o.start(t);o.stop(t+4)},this)};
 
   // SFX cue list, seconds after the gift tap (matches v2 timeline x T)
   P.start=function(t0){
@@ -394,10 +397,10 @@ body.locked{overflow:hidden}
     [100,96,103,98,105,100,107,103].forEach(function(m,i){self.bell(s(26.75+i*0.11),m,0.03-i*0.002)});
   };
   // v6 intro cues (t0 = '▶ 見る' tap): cheesy little sparkles per slide, then a small deflate
-  P.intro=function(t0,OFF,STARTS){OFF=OFF||0;var T=this.T,s0=function(x){return t0+x*T},s=function(x){return t0+(x>=14.9?x+OFF:x)*T},self=this;
+  P.intro=function(t0,OFF,STARTS){OFF=OFF||0;var T=this.T,s0=function(x){return t0+x*T},s=function(x){return t0+(x>=14.9?x+OFF:x)*T},self=this,RB=this.ctx.createGain();RB.connect(this.master);this._run=RB;
     // ---- deliberately cheesy "home keyboard demo" BGM, 0-14.6s, synthesized (original, nothing to license) ----
     try{
-    var c=this.ctx,ib=c.createGain();ib.gain.value=1.5;ib.connect(this.master);
+    var c=this.ctx,ib=c.createGain();ib.gain.value=1.5;ib.connect(RB);
     var stop=s(19.0);ib.gain.setValueAtTime(1.5,s(15.1)-0.01);ib.gain.linearRampToValueAtTime(0.5,s(15.5));ib.gain.setValueAtTime(0.5,s(18.2));ib.gain.linearRampToValueAtTime(1.5,s(18.35));ib.gain.setValueAtTime(1.5,s(18.4));ib.gain.linearRampToValueAtTime(0.0001,stop);
     function osc(type,f,t,d,v,opt){opt=opt||{};var o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,t);
       if(opt.drop)o.frequency.exponentialRampToValueAtTime(opt.drop,t+d);
@@ -444,14 +447,18 @@ body.locked{overflow:hidden}
     var eg=c.createGain();eg.gain.setValueAtTime(0.0001,e0);eg.gain.exponentialRampToValueAtTime(0.18,s(15.5));eg.gain.exponentialRampToValueAtTime(0.45,pass);eg.gain.exponentialRampToValueAtTime(0.0001,e1);
     eo.connect(ef);eo2.connect(ef);ef.connect(am);am.connect(eg);var dst=eg;
     if(c.createStereoPanner){var pn=c.createStereoPanner();pn.pan.setValueAtTime(-0.9,e0);pn.pan.linearRampToValueAtTime(0.9,e1);eg.connect(pn);dst=pn}
-    dst.connect(this.master);[eo,eo2,lfo,lfo2].forEach(function(o){o.start(e0);o.stop(e1+0.05)});
+    dst.connect(RB);[eo,eo2,lfo,lfo2].forEach(function(o){o.start(e0);o.stop(e1+0.05)});
+    // start jingle (cheap 'ta-da!' arpeggio on the ▶ tap, overlaps bar 1 so there is no silent lead-in)
+    [72,76,79,84].forEach(function(m,i){osc('square',mtof(m),t0+i*0.06,0.18,0.05,{lp:3500})});osc('sine',mtof(96),t0+0.24,0.6,0.04,{a:0.003});nz(t0,0.5,'highpass',7000,0.08);
     console.log('intro bgm scheduled');
     }catch(e){console.log('intro bgm failed',e)}
 
-    (STARTS||[0.4,2.6,5.0,7.4,9.8,12.2,14.6]).forEach(function(x){[84,88,91,96].forEach(function(m,i){self.bell(s0(x+i*0.07),m,0.025)})});
+    (STARTS||[0.4,2.6,5.0,7.4,9.8,12.2,14.6]).forEach(function(x){[84,88,91,96].forEach(function(m,i){self.bell(s0(x+i*0.07),m,0.025,RB)})});
     // deflate on 'お父さんより'
-    this.piano(s(22.7),64,0.06);this.piano(s(23.15),60,0.05);this.boom(s(23.15),0.12);
+    this.piano(s(22.7),64,0.06,RB);this.piano(s(23.15),60,0.05,RB);this.boom(s(23.15),0.12,RB);
   };
+  P.stopIntro=function(){var r=this._run;if(!r)return;try{var t=this.ctx.currentTime;r.gain.setValueAtTime(r.gain.value,t);r.gain.linearRampToValueAtTime(0.0001,t+0.08);setTimeout(function(){try{r.disconnect()}catch(e){}},150)}catch(e){}this._run=null};
+  P.jingle=function(){var c=this.ctx,t=c.currentTime+0.03,self=this;[[72,0],[76,.09],[79,.18],[84,.27],[88,.42]].forEach(function(n){var o=c.createOscillator(),g=c.createGain();o.type='square';o.frequency.value=mtof(n[0]);g.gain.setValueAtTime(0.0001,t+n[1]);g.gain.linearRampToValueAtTime(0.04,t+n[1]+0.01);g.gain.linearRampToValueAtTime(0.0001,t+n[1]+0.16);o.connect(g);g.connect(self.bus);o.start(t+n[1]);o.stop(t+n[1]+0.2)});this.bell(t+0.42,100,0.03)};
   // ticket slide-up: soft chime, then silence
   P.ticket=function(t){var T=this.T;this.bell(t+0.7*T,84,0.06);this.bell(t+0.85*T,91,0.04);this.bell(t+1.05*T,96,0.025);};
   P.setMuted=function(m){var g=this.mute.gain,t=this.ctx.currentTime;g.cancelScheduledValues(t);g.setTargetAtTime(m?0:1,t,0.08)};
@@ -462,7 +469,7 @@ body.locked{overflow:hidden}
       function w(o,s){for(var i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))}w(0,'RIFF');v.setUint32(4,36+n*4,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,2,true);v.setUint32(24,sr,true);v.setUint32(28,sr*4,true);v.setUint16(32,4,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*4,true);
       var peak=0;for(var i=0;i<n;i++){peak=Math.max(peak,Math.abs(L[i]),Math.abs(R[i]));v.setInt16(44+i*4,Math.max(-1,Math.min(1,L[i]))*32767,true);v.setInt16(46+i*4,Math.max(-1,Math.min(1,R[i]))*32767,true)}
       var bytes=new Uint8Array(ab),str='';for(var j=0;j<bytes.length;j+=32768)str+=String.fromCharCode.apply(null,bytes.subarray(j,j+32768));return {b64:btoa(str),peak:peak}})};
-  window.__renderIntro=function(total){var sr=44100,c=new OfflineAudioContext(2,sr*total,sr),m=new Music(c,1);m.intro(0);
+  window.__renderIntro=function(total){var sr=44100,c=new OfflineAudioContext(2,sr*total,sr),m=new Music(c,1);m.intro(0,window.__OFF||0,window.__STARTS);
     return c.startRendering().then(function(buf){var n=buf.length,L=buf.getChannelData(0),R=buf.getChannelData(1),ab=new ArrayBuffer(44+n*4),v=new DataView(ab);
       function w(o,s){for(var i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))}w(0,'RIFF');v.setUint32(4,36+n*4,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,2,true);v.setUint32(24,sr,true);v.setUint32(28,sr*4,true);v.setUint16(32,4,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*4,true);
       var peak=0;for(var i=0;i<n;i++){peak=Math.max(peak,Math.abs(L[i]),Math.abs(R[i]));v.setInt16(44+i*4,Math.max(-1,Math.min(1,L[i]))*32767,true);v.setInt16(46+i*4,Math.max(-1,Math.min(1,R[i]))*32767,true)}
@@ -503,7 +510,7 @@ body.locked{overflow:hidden}
 
   function ensureAudio(){
     var GM=window.GiftMusic;if(window.__music||!GM||!GM.AC)return;
-    var ac=new GM.AC();window.__music=new GM.Music(ac,T);if(ac.state==='suspended'&&ac.resume)ac.resume();
+    try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}var ac=new GM.AC();window.__music=new GM.Music(ac,T);if(ac.state==='suspended'&&ac.resume)ac.resume();
     console.log('audio context created: '+ac.state);$('muteBtn').classList.add('on');
   }
   // ---- v7 intro: data-driven. Add photos by adding {p:'img/xx.jpg',cap:'...'} entries ----
@@ -533,27 +540,44 @@ body.locked{overflow:hidden}
     t+=d});document.getElementById('slides').innerHTML=h;window.__SEQ=SEQ;return t})();
   // ---- v6 intro ----
   var played=false;
-  $('playBtn').addEventListener('click',function(){
-    if(played)return;played=true;this.disabled=true;
-    try{ensureAudio();var m=window.__music;if(m){var t0=m.ctx.currentTime+0.05;m.intro(t0,SHOW_END-14.6,SEQ.map(function(x){return x.at}).concat([SHOW_END]))}}catch(e){console.log('audio unavailable',e)}
-    hide('pre');show('movie');
-    hide('pre');show('movie');
-    var off=SHOW_END-14.6; // seconds added vs v6
-    try{var m2=window.__music;if(m2){}}catch(e){}
-    SEQ.forEach(function(it,i){at(it.at*1000,function(){if(i)$('sl'+(i-1)).classList.add('out');$('sl'+i).classList.add('on');sparkles()})});
-    at(SHOW_END*1000,function(){$('sl'+(SEQ.length-1)).classList.add('out');$('s6').classList.add('on');sparkles()});
-    var o=off*1000;
-    at(15400+o,function(){$('bike').classList.add('go');$('road').classList.add('on');$('streaks').classList.add('on');smokeRun(3000*T)});
-    [15600,16900].forEach(function(x){at(x+o,function(){var m=$('movie');m.classList.remove('shake');void m.offsetWidth;m.classList.add('shake')})});
-    at(18600+o,function(){$('road').classList.remove('on');$('streaks').classList.remove('on')});
-    at(19000+o,function(){hide('movie');show('endcard')});
+  var IT=[],wigIv=null;function ati(ms,fn){IT.push(setTimeout(fn,ms*T))}
+  var preJ=false;$('pre').addEventListener('pointerdown',function(e){if(preJ||e.target.id==='playBtn')return;preJ=true;try{ensureAudio();var m=window.__music;if(m){if(m.ctx.state==='suspended')m.ctx.resume();m.jingle()}}catch(x){}});
+  function runIntro(){
+    IT.forEach(clearTimeout);IT=[];if(wigIv){clearInterval(wigIv);wigIv=null}
+    try{ensureAudio();var m=window.__music;if(m){m.stopIntro();if(m.ctx.state==='suspended')m.ctx.resume();var t0=m.ctx.currentTime+0.05;m.intro(t0,SHOW_END-14.6,SEQ.map(function(x){return x.at}).concat([SHOW_END]))}}catch(e){console.log('audio unavailable',e)}
+    var off=SHOW_END-14.6,o=off*1000;
+    SEQ.forEach(function(it,i){ati(it.at*1000,function(){if(i)$('sl'+(i-1)).classList.add('out');$('sl'+i).classList.add('on');sparkles()})});
+    ati(SHOW_END*1000,function(){$('sl'+(SEQ.length-1)).classList.add('out');$('s6').classList.add('on');sparkles()});
+    ati(15400+o,function(){$('bike').classList.add('go');$('road').classList.add('on');$('streaks').classList.add('on');smokeRun(3000*T)});
+    [15600,16900].forEach(function(x){ati(x+o,function(){var m=$('movie');m.classList.remove('shake');void m.offsetWidth;m.classList.add('shake')})});
+    ati(18600+o,function(){$('road').classList.remove('on');$('streaks').classList.remove('on')});
+    ati(19000+o,function(){hide('movie');show('endcard')});
     var eb=$('endBox');
     function el(txt,cls){var p=document.createElement('p');p.className='line '+(cls||'');p.textContent=txt;eb.appendChild(p);requestAnimationFrame(function(){requestAnimationFrame(function(){p.classList.add('on')})})}
-    at(19800+o,function(){el('……以上です。')});
-    at(21100+o,function(){el('お誕生日おめでとう。')});
-    at(22300+o,function(){el('お父さんより','small')});
-    at(26500+o,function(){var tb=$('tinyBox');tb.style.display='block';
-      setInterval(function(){if(tb.classList.contains('s1')||tb.classList.contains('s2'))return;tb.classList.remove('wig');void tb.offsetWidth;tb.classList.add('wig')},4500)});
+    ati(19800+o,function(){el('……以上です。')});
+    ati(21100+o,function(){el('お誕生日おめでとう。')});
+    ati(22300+o,function(){el('お父さんより','small')});
+    ati(23300+o,function(){$('replayBtn').classList.add('on')});
+    ati(26500+o,function(){var tb=$('tinyBox');tb.style.display='block';
+      wigIv=setInterval(function(){if(taps)return;tb.classList.remove('wig');void tb.offsetWidth;tb.classList.add('wig')},11000)});
+  }
+  var played=false;
+  $('playBtn').addEventListener('click',function(){
+    if(played)return;played=true;this.disabled=true;
+    hide('pre');show('movie');runIntro();
+  });
+  var rpLock=false;
+  $('replayBtn').addEventListener('click',function(){
+    if(rpLock||opened||taps>7)return;rpLock=true;setTimeout(function(){rpLock=false},800);
+    IT.forEach(clearTimeout);IT=[];if(wigIv){clearInterval(wigIv);wigIv=null}
+    taps=0;var tb=$('tinyBox');tb.removeAttribute('style');tb.style.display='none';tb.className='';tb.disabled=false;
+    $('endBox').innerHTML='';$('endBox').removeAttribute('style');$('endBox').style.cssText='display:flex;flex-direction:column;gap:14px';
+    this.classList.remove('on');
+    [].forEach.call(document.querySelectorAll('#movie .slide'),function(x){x.classList.remove('on','out')});
+    ['bike','road','streaks'].forEach(function(id){$(id).classList.remove('go','on')});$('movie').classList.remove('shake');
+    [].forEach.call(document.querySelectorAll('#movie .smoke,#movie .sparkle'),function(x){x.remove()});
+    void $('movie').offsetWidth;
+    hide('endcard');show('movie');runIntro();
   });
   var taps=0,tapLock=false,SZ=[40,55,75,100,130,160,190];
   $('tinyBox').addEventListener('click',function(){

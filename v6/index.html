@@ -135,15 +135,26 @@ body.locked{overflow:hidden}
 @keyframes spk{0%{opacity:0;transform:scale(.2) rotate(0)}30%{opacity:1}100%{opacity:0;transform:scale(1.3) rotate(160deg)}}
 .bikecap{font-size:clamp(24px,7.6vw,34px);text-align:center;line-height:1.35;margin-bottom:24vh}
 #bike{position:absolute;left:0;top:56%;width:260px;transform:translateX(-300px);z-index:4}
-#bike.go{animation:ride 2s cubic-bezier(.45,.05,.55,.95) forwards}
-@keyframes ride{from{transform:translateX(-300px)}to{transform:translateX(calc(100vw + 40px))}}
+#bike.go{animation:ride 3s linear forwards}
+@keyframes ride{0%{transform:translateX(-300px) rotate(1deg)}30%{transform:translateX(calc(50vw - 175px)) rotate(-1.5deg)}70%{transform:translateX(calc(50vw - 95px)) rotate(-2deg)}100%{transform:translateX(calc(100vw + 60px)) rotate(-3deg)}}
+.shadow{position:absolute;left:30px;width:220px;top:126px;height:14px;border-radius:50%;background:radial-gradient(ellipse,rgba(40,20,60,.45),transparent 70%)}
+#road{position:absolute;left:0;right:0;top:calc(56% + 128px);height:6px;opacity:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.9) 0 40px,transparent 40px 90px);z-index:3;transition:opacity .4s}
+#road.on{opacity:1;animation:roadmv .25s linear infinite}
+@keyframes roadmv{to{background-position:-90px 0}}
+#streaks{position:absolute;inset:0;opacity:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 46px,rgba(255,255,255,.45) 46px 48px,transparent 48px 120px);transition:opacity .5s}
+#streaks.on{opacity:1;animation:strmv .6s linear infinite;-webkit-mask:linear-gradient(90deg,transparent,#000 30%,#000 70%,transparent)}
+@keyframes strmv{from{background-position:0 0}to{background-position:-200px 0}}
+#movie.shake{animation:mbg 6s ease infinite,shk .45s linear}
+@keyframes shk{20%{transform:translate(2px,-2px)}40%{transform:translate(-3px,1px)}60%{transform:translate(2px,2px)}80%{transform:translate(-1px,-1px)}}
+.smoke{position:absolute;z-index:3;width:34px;height:34px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(250,250,250,.95),rgba(200,200,205,.7) 55%,rgba(180,180,190,0) 72%);animation:smk 1.6s ease-out forwards}
+@keyframes smk{from{opacity:.95;transform:translate(0,0) scale(.5)}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(var(--s))}}
 #bike svg{display:block;width:260px;height:auto;animation:bnc .22s ease-in-out infinite alternate}
 @keyframes bnc{to{transform:translateY(-3px) rotate(-.8deg)}}
 .wheel{transform-box:fill-box;transform-origin:center;animation:wh .25s linear infinite}
 @keyframes wh{to{transform:rotate(360deg)}}
 .brr{position:absolute;right:100%;top:18px;white-space:nowrap;font-size:30px;letter-spacing:.05em;padding-right:8px}
 .speed{position:absolute;right:100%;top:60px;width:90px;height:40px;background:repeating-linear-gradient(180deg,rgba(255,255,255,.95) 0 3px,transparent 3px 12px);margin-right:4px;border-radius:2px}
-.puff{position:absolute;left:-10px;top:96px;font-size:30px;animation:pf .5s ease-out infinite}
+.puff{display:none}
 @keyframes pf{from{opacity:.9;transform:translateX(0) scale(.6)}to{opacity:0;transform:translateX(-50px) scale(1.4)}}
 #endcard{z-index:6;background:#0b0d14}
 #endcard .line{font-size:20px}
@@ -176,17 +187,17 @@ body.locked{overflow:hidden}
   <div class="slide fx-slide" id="s4"><div class="frame"><img src="img/p4.jpg" alt=""></div><div class="wordart cap">チョコ、口のまわりに<br>全部いった日</div></div>
   <div class="slide fx-flip" id="s5"><div class="frame"><img src="img/p5.jpg" alt=""></div><div class="wordart cap">いつのまにか大人</div></div>
   <div class="slide fx-zoom" id="s6"><div class="wordart bikecap">そして…<br>ドラッグスター好きに<br>育ちました！！</div></div>
-  <div id="bike" aria-hidden="true"><div class="speed"></div><div class="wordart brr">DODODODO!!</div><div class="puff">💨</div>
-<svg viewBox="0 0 270 135" xmlns="http://www.w3.org/2000/svg">
+  <div id="streaks"></div><div id="road"></div>
+<div id="bike" aria-hidden="true"><div class="shadow"></div><div class="speed"></div><div class="wordart brr">BOOOON!!</div><div class="puff">💨</div>
+<svg viewBox="0 0 270 135" xmlns="http://www.w3.org/2000/svg" overflow="visible"><defs><filter id="mb" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.6 0.3"/></filter></defs>
 <!-- generic cruiser silhouette (DragStar-400-like: white teardrop tank, chrome V-twin); no logos -->
-<path d="M18 96Q22 66 58 70L74 80" fill="none" stroke="#111" stroke-width="7" stroke-linecap="round"/>
-<g class="wheel"><circle cx="50" cy="104" r="27" fill="#1a1a1a"/><circle cx="50" cy="104" r="20" fill="none" stroke="#e6e9ee" stroke-width="2.5"/>
+<path d="M18 96Q22 66 58 70L74 80" fill="none" stroke="#9aa3ad" stroke-width="10" stroke-linecap="round"/><path d="M18 96Q22 66 58 70L74 80" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+<g class="wheel" filter="url(#mb)"><circle cx="50" cy="104" r="27" fill="#1a1a1a"/><circle cx="50" cy="104" r="20" fill="none" stroke="#e6e9ee" stroke-width="2.5"/>
 <path d="M50 84V124M30 104H70M36 90L64 118M64 90L36 118M42 85L58 123M31 96L69 112" stroke="#cfd5dc" stroke-width="1.3"/><circle cx="50" cy="104" r="5" fill="#eee"/></g>
-<g class="wheel"><circle cx="214" cy="104" r="27" fill="#1a1a1a"/><circle cx="214" cy="104" r="20" fill="none" stroke="#e6e9ee" stroke-width="2.5"/>
+<g class="wheel" filter="url(#mb)"><circle cx="214" cy="104" r="27" fill="#1a1a1a"/><circle cx="214" cy="104" r="20" fill="none" stroke="#e6e9ee" stroke-width="2.5"/>
 <path d="M214 84V124M194 104H234M200 90L228 118M228 90L200 118M206 85L222 123M195 96L233 112" stroke="#cfd5dc" stroke-width="1.3"/><circle cx="214" cy="104" r="5" fill="#eee"/></g>
 <path d="M50 104L84 92H150L176 66M84 92L102 72H176" fill="none" stroke="#111" stroke-width="6" stroke-linejoin="round"/>
 <path d="M188 50L214 104" stroke="#cfd5dc" stroke-width="6" stroke-linecap="round"/>
-<path d="M186 82Q214 66 242 86" fill="none" stroke="#111" stroke-width="9" stroke-linecap="round"/>
 <path d="M60 112H150Q160 112 164 104" fill="none" stroke="#e9edf2" stroke-width="5" stroke-linecap="round"/>
 <path d="M58 118H146Q158 118 166 108" fill="none" stroke="#c9d0d8" stroke-width="5" stroke-linecap="round"/>
 <path d="M150 112L166 104" stroke="#e9edf2" stroke-width="4"/>
@@ -203,7 +214,7 @@ body.locked{overflow:hidden}
 <path d="M100 30L132 36L158 35" fill="none" stroke="#1d2a50" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M94 64L142 66L156 92" fill="none" stroke="#2a3550" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M152 94L164 94" stroke="#111" stroke-width="6" stroke-linecap="round"/>
-<circle cx="100" cy="13" r="13" fill="#ffffff" stroke="#c4c9d0" stroke-width="2"/><path d="M88 9Q99 -3 112 6" fill="none" stroke="#111" stroke-width="3.5" stroke-linecap="round"/><path d="M104 7H114V17H106Z" fill="#333"/>
+<circle cx="100" cy="13" r="13" fill="#ffffff" stroke="#c4c9d0" stroke-width="2"/><path d="M88 9Q99 -3 112 6" fill="none" stroke="#111" stroke-width="6" stroke-linecap="round"/><path d="M104 7H114V17H106Z" fill="#333"/>
 </svg></div>
 </section>
 <section class="screen hidden" id="endcard"><div id="endBox" style="display:flex;flex-direction:column;gap:14px"></div></section>
@@ -339,7 +350,7 @@ body.locked{overflow:hidden}
     // ---- deliberately cheesy "home keyboard demo" BGM, 0-14.6s, synthesized (original, nothing to license) ----
     try{
     var c=this.ctx,ib=c.createGain();ib.gain.value=1.5;ib.connect(this.master);
-    var stop=s(18.2);ib.gain.setValueAtTime(1.5,s(15.1));ib.gain.linearRampToValueAtTime(0.5,s(15.5));ib.gain.setValueAtTime(0.5,s(17.2));ib.gain.linearRampToValueAtTime(1.5,s(17.5));ib.gain.setValueAtTime(1.5,s(17.6));ib.gain.linearRampToValueAtTime(0.0001,stop);
+    var stop=s(19.0);ib.gain.setValueAtTime(1.5,s(15.1));ib.gain.linearRampToValueAtTime(0.5,s(15.5));ib.gain.setValueAtTime(0.5,s(18.2));ib.gain.linearRampToValueAtTime(1.5,s(18.35));ib.gain.setValueAtTime(1.5,s(18.4));ib.gain.linearRampToValueAtTime(0.0001,stop);
     function osc(type,f,t,d,v,opt){opt=opt||{};var o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,t);
       if(opt.drop)o.frequency.exponentialRampToValueAtTime(opt.drop,t+d);
       if(opt.vib){var l=c.createOscillator(),lg=c.createGain();l.frequency.value=5.5;lg.gain.value=f*0.012;l.connect(lg);lg.connect(o.frequency);l.start(t);l.stop(t+d+0.1)}
@@ -349,11 +360,11 @@ body.locked{overflow:hidden}
     function nz(t,d,type,fq,v){var src=c.createBufferSource();src.buffer=self.noiseBuf;var f=c.createBiquadFilter();f.type=type;f.frequency.value=fq;var g=c.createGain();g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(0.0001,t+d);src.connect(f);f.connect(g);g.connect(ib);src.start(t);src.stop(t+d+0.02)}
     var B=0.25*T; // eighth note at 120bpm
     // bars of 2s: I-V-vi-IV (C), I-V, fill, then the corny key change up a whole step (D)
-    var bars=[[48,0],[43,0],[45,0],[41,0],[48,0],[43,2],[45,2],[41,2],[48,2]];
+    var bars=[[48,0],[43,0],[45,0],[41,0],[48,0],[43,2],[45,2],[41,2],[48,2],[43,2]];
     var chords={48:[60,64,67],43:[59,62,67],45:[57,60,64],41:[57,60,65]};
     var mel=[[76,79,84,83,79,76,79,81],[79,77,74,77,79,74,71,74],[72,76,81,79,76,72,76,77],[77,76,74,72,74,76,77,79],
-             [76,79,84,83,79,76,79,81],[79,81,83,84,86,0,86,0],[84,83,81,79,81,83,84,0],[77,76,74,72,74,76,77,79],[76,79,84,83,79,76,79,81]];
-    for(var b=0;b<9;b++){var bt=0.1+b*2*T,root=bars[b][0],k=bars[b][1];if(b===4)k=0;
+             [76,79,84,83,79,76,79,81],[79,81,83,84,86,0,86,0],[84,83,81,79,81,83,84,0],[77,76,74,72,74,76,77,79],[76,79,84,83,79,76,79,81],[79,77,74,77,79,74,71,74]];
+    for(var b=0;b<10;b++){var bt=0.1+b*2*T,root=bars[b][0],k=bars[b][1];if(b===4)k=0;
       if(b>=5)k=2;
       // strings pad (cheap saw, slow attack)
       chords[root].forEach(function(m){osc('sawtooth',mtof(m+k),t0+bt,2*T-0.05,0.025,{a:0.25,lp:1800})});
@@ -370,9 +381,9 @@ body.locked{overflow:hidden}
     // drum fill + cymbal before the key change (bar 5 starts at 10.1s)
     [9.6,9.725,9.85,9.975].forEach(function(x){nz(s(x),0.12,'bandpass',1200,0.25)});nz(s(10.1),1.2,'highpass',6000,0.12);
     // last chord held, then "tape stop" slowdown into the '……以上です。' card
-    [62,66,69,74].forEach(function(m){osc('sawtooth',mtof(m),s(17.6),0.6*T,0.035,{drop:mtof(m)*0.25,lp:2000,a:0.005})});
+    [62,66,69,74].forEach(function(m){osc('sawtooth',mtof(m),s(18.4),0.6*T,0.035,{drop:mtof(m)*0.25,lp:2000,a:0.005})});
     // motorcycle drive-by 'ブブブブブーン' (bike crosses 15.4-17.4s): AM-pulsed saw engine, rev up, doppler-ish rise/fall, pan L->R
-    var e0=s(15.0),e1=s(17.8),pass=s(16.4);
+    var e0=s(15.0),e1=s(18.8),pass=s(16.9);
     var eo=c.createOscillator(),eo2=c.createOscillator();eo.type='sawtooth';eo2.type='sawtooth';eo2.detune.value=-1200;
     eo.frequency.setValueAtTime(42,e0);eo.frequency.linearRampToValueAtTime(50,s(15.6));eo.frequency.exponentialRampToValueAtTime(72,pass);eo.frequency.exponentialRampToValueAtTime(44,e1);
     eo2.frequency.setValueAtTime(42,e0);eo2.frequency.linearRampToValueAtTime(50,s(15.6));eo2.frequency.exponentialRampToValueAtTime(72,pass);eo2.frequency.exponentialRampToValueAtTime(44,e1);
@@ -391,7 +402,7 @@ body.locked{overflow:hidden}
 
     [0.4,2.6,5.0,7.4,9.8,12.2,14.6].forEach(function(x){[84,88,91,96].forEach(function(m,i){self.bell(s(x+i*0.07),m,0.025)})});
     // deflate on 'お父さんより'
-    this.piano(s(21.9),64,0.06);this.piano(s(22.35),60,0.05);this.boom(s(22.35),0.12);
+    this.piano(s(22.7),64,0.06);this.piano(s(23.15),60,0.05);this.boom(s(23.15),0.12);
   };
   // ticket slide-up: soft chime, then silence
   P.ticket=function(t){var T=this.T;this.bell(t+0.7*T,84,0.06);this.bell(t+0.85*T,91,0.04);this.bell(t+1.05*T,96,0.025);};
@@ -453,21 +464,31 @@ body.locked{overflow:hidden}
     if(played)return;played=true;this.disabled=true;
     try{ensureAudio();var m=window.__music;if(m){var t0=m.ctx.currentTime+0.05;m.intro(t0)}}catch(e){console.log('audio unavailable',e)}
     hide('pre');show('movie');
-    var ids=['s0','s1','s2','s3','s4','s5','s6'],start=[400,2600,5000,7400,9800,12200,14600],endAt=18200;
+    var ids=['s0','s1','s2','s3','s4','s5','s6'],start=[400,2600,5000,7400,9800,12200,14600],endAt=19000;
     ids.forEach(function(id,i){
       at(start[i],function(){if(i)$(ids[i-1]).classList.add('out');$(id).classList.add('on');sparkles()});
     });
-    at(15400,function(){$('bike').classList.add('go')});
+    at(15400,function(){$('bike').classList.add('go');$('road').classList.add('on');$('streaks').classList.add('on');smokeRun(3000*T)});
+    [15600,16900].forEach(function(x){at(x,function(){var m=$('movie');m.classList.remove('shake');void m.offsetWidth;m.classList.add('shake')})});
+    at(18600,function(){$('road').classList.remove('on');$('streaks').classList.remove('on')});
     at(endAt,function(){hide('movie');show('endcard')});
     var eb=$('endBox');
     function el(txt,cls){var p=document.createElement('p');p.className='line '+(cls||'');p.textContent=txt;eb.appendChild(p);requestAnimationFrame(function(){requestAnimationFrame(function(){p.classList.add('on')})})}
-    at(19000,function(){el('……以上です。')});
-    at(20300,function(){el('お誕生日おめでとう。')});
-    at(21500,function(){el('お父さんより','small')});
-    at(24600,function(){hide('endcard')});
-    at(25500,function(){show('tricky');$('trickyL').classList.add('on')});
-    at(27900,function(){hide('tricky');show('intro')});
+    at(19800,function(){el('……以上です。')});
+    at(21100,function(){el('お誕生日おめでとう。')});
+    at(22300,function(){el('お父さんより','small')});
+    at(25400,function(){hide('endcard')});
+    at(26300,function(){show('tricky');$('trickyL').classList.add('on')});
+    at(28700,function(){hide('tricky');show('intro')});
   });
+  function smokeRun(dur){var mv=$('movie'),bk=$('bike'),t0=Date.now(),n=0;
+    var iv=setInterval(function(){if(Date.now()-t0>dur+300||n>300){clearInterval(iv);return}
+      var r=bk.getBoundingClientRect(),mr=mv.getBoundingClientRect();
+      for(var k=0;k<3;k++){n++;var e=document.createElement('div');e.className='smoke';
+        e.style.left=(r.left-mr.left+40-Math.random()*10)+'px';e.style.top=(r.top-mr.top+100+Math.random()*10)+'px';
+        e.style.setProperty('--dx',(-60-Math.random()*90)+'px');e.style.setProperty('--dy',(-30-Math.random()*60)+'px');e.style.setProperty('--s',(2.6+Math.random()*2.6).toFixed(2));
+        mv.appendChild(e);(function(x){setTimeout(function(){x.remove()},1700)})(e)}
+    },50);}
   function sparkles(){var mv=$('movie'),s=['✨','⭐','💫','🌟'];for(var i=0;i<6;i++){var e=document.createElement('span');e.className='sparkle';e.textContent=s[i%4];
     e.style.left=(5+Math.random()*85)+'%';e.style.top=(8+Math.random()*80)+'%';e.style.animationDelay=(Math.random()*.5)+'s';mv.appendChild(e);(function(x){setTimeout(function(){x.remove()},2200)})(e)}}
   var opened=false;

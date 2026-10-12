@@ -133,6 +133,13 @@ body.locked{overflow:hidden}
 @keyframes drp{from{opacity:0;transform:translateY(-120%)}to{opacity:1;transform:none}}
 .fx-heart.on{animation:hrt 1s ease-out both}
 @keyframes hrt{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(120% at 50% 50%)}}
+/* x-trail drive-by */
+.carcap{font-size:clamp(22px,7vw,30px);white-space:nowrap;text-align:center;line-height:1.25;margin-bottom:30vh;transform:rotate(-4deg)}
+.xcar{position:absolute;left:0;top:58%;width:300px;transform:translateX(-340px);z-index:4}
+.xsvg{display:block;width:300px;height:auto}
+.slide.on .xcar{animation:drive 6.4s cubic-bezier(.45,0,.55,1) .3s forwards}
+.slide.on .xsvg{animation:bnc .25s ease-in-out infinite alternate}
+@keyframes drive{0%{transform:translateX(-340px)}30%{transform:translateX(calc(100vw + 40px)) scaleX(1)}31%{transform:translateX(calc(100vw + 40px)) scaleX(-1)}62%{transform:translateX(calc(50vw - 150px)) scaleX(-1) rotate(4deg)}70%{transform:translateX(calc(50vw - 175px)) scaleX(-1) rotate(-5deg)}78%{transform:translateX(calc(50vw - 150px)) scaleX(-1) rotate(2deg)}86%,92%{transform:translateX(calc(50vw - 150px)) scaleX(-1)}100%{transform:translateX(-360px) scaleX(-1)}}
 /* fake end tiny box */
 #replayBtn{position:absolute;top:calc(64px + env(safe-area-inset-top));left:50%;transform:translateX(-50%) rotate(-3deg);padding:14px 26px;font:900 24px "Comic Sans MS","Hiragino Maru Gothic ProN",sans-serif;color:#ffff00;background:linear-gradient(180deg,#ff3cac,#ff0000 50%,#ff9500);border:5px outset #ffd700;border-radius:10px;text-shadow:2px 2px 0 #000;-webkit-text-stroke:1px #000;box-shadow:0 0 0 3px #00ffff,5px 6px 0 3px rgba(0,0,0,.5);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .8s;z-index:8;white-space:nowrap}
 #replayBtn.on{opacity:1;pointer-events:auto;animation:rpl 1.2s ease-in-out infinite alternate}
@@ -236,7 +243,24 @@ body.locked{overflow:hidden}
 <section class="screen hidden" id="movie" aria-live="polite">
   <div class="glitter"></div>
   <div class="badge">✨ Powered by AI ✨</div>
-  <div id="slides"></div>
+  <div id="slides"></div><template id="carTpl"><svg class="xsvg" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+<!-- generic black compact SUV (X-Trail T32-like silhouette), illustration, no logos -->
+<path d="M14 92Q12 70 30 66L70 60Q92 34 120 28L220 26Q240 26 254 40L280 62Q306 66 308 84L308 100Q308 106 300 106H22Q14 106 14 98Z" fill="#111317" stroke="#000" stroke-width="2"/>
+<path d="M24 70L72 63Q94 38 120 32L220 30Q236 30 248 42L270 62" fill="none" stroke="#3a3f48" stroke-width="2"/>
+<path d="M118 22L232 21" stroke="#9aa1aa" stroke-width="4" stroke-linecap="round"/><path d="M130 22V28M220 21V27" stroke="#9aa1aa" stroke-width="3"/><path d="M140 21V12M210 20V11" stroke="#222" stroke-width="4"/><path d="M128 12H226" stroke="#333" stroke-width="3"/><rect x="104" y="1" width="140" height="9" rx="4.5" fill="#00c2ff" stroke="#000" stroke-width="1.5"/><path d="M118 5.5H230" stroke="#ff3cac" stroke-width="3"/><rect x="112" y="-8" width="128" height="8" rx="4" fill="#ffd400" stroke="#000" stroke-width="1.5"/><path d="M126 -4H226" stroke="#7a00ff" stroke-width="2.5" stroke-dasharray="10 6"/><path d="M146 -9V13M204 -9V13" stroke="#111" stroke-width="3"/>
+<path d="M84 60Q100 38 122 34L176 33V60Z" fill="#2b3a4c"/><path d="M182 33L222 33Q236 34 246 46L258 60H182Z" fill="#2b3a4c"/>
+<path d="M90 56Q104 40 122 37L150 36" fill="none" stroke="#6f8aa6" stroke-width="2" opacity=".6"/>
+<g class="driver"><circle cx="208" cy="46" r="9" fill="#e3b892"/><path d="M199 43Q206 34 216 40L216 43H199Z" fill="#222"/><path d="M203 44.5H217L216 49H205Z" fill="#000"/><path d="M196 45H203" stroke="#000" stroke-width="1.5"/><path d="M206 45.5L209 45.5" stroke="#8ab" stroke-width="1"/><path d="M196 55Q208 52 220 60H196Z" fill="#333"/><circle cx="234" cy="54" r="6" fill="none" stroke="#111" stroke-width="2.5"/></g>
+<path d="M178 33V100M100 62H290" stroke="#000" stroke-width="1.5" opacity=".6"/>
+<path d="M140 68H156M206 68H222" stroke="#c8ccd2" stroke-width="3" stroke-linecap="round"/>
+<path d="M30 80Q160 74 296 78" stroke="#c8ccd2" stroke-width="1.5" fill="none" opacity=".5"/>
+<path d="M286 66Q300 70 306 80L306 88Q296 84 284 84Z" fill="#c8ccd2"/><path d="M290 70L304 80M288 76L304 86" stroke="#7d848c" stroke-width="1.5"/>
+<path d="M276 62Q290 62 300 70L292 72Q282 66 274 66Z" fill="#e8f2ff"/><path d="M16 70L28 68L28 80L16 82Z" fill="#c4161c"/>
+<path d="M14 100H308" stroke="#3b3f46" stroke-width="12"/><path d="M40 108A32 32 0 0 1 104 108M220 108A32 32 0 0 1 284 108" fill="none" stroke="#3b3f46" stroke-width="7"/>
+<path d="M44 106A28 28 0 0 1 100 106M224 106A28 28 0 0 1 280 106" fill="#000"/>
+<g class="wheel"><circle cx="72" cy="108" r="24" fill="#151515"/><circle cx="72" cy="108" r="14" fill="#9aa1aa"/><path d="M72 94V122M58 108H86M62 98L82 118M82 98L62 118" stroke="#555" stroke-width="3"/><circle cx="72" cy="108" r="4" fill="#ddd"/></g>
+<g class="wheel"><circle cx="252" cy="108" r="24" fill="#151515"/><circle cx="252" cy="108" r="14" fill="#9aa1aa"/><path d="M252 94V122M238 108H266M242 98L262 118M262 98L242 118" stroke="#555" stroke-width="3"/><circle cx="252" cy="108" r="4" fill="#ddd"/></g>
+</svg></template>
   <div class="slide fx-zoom" id="s6"><div class="wordart bikecap">そして…<br>ドラッグスター好きに<br>育ちました！！</div></div>
   <div id="streaks"></div><div id="road"></div>
 <div id="bike" aria-hidden="true"><div class="shadow"></div><div class="speed"></div><div class="wordart brr">BOOOON!!</div><div class="puff">💨</div>
@@ -265,7 +289,7 @@ body.locked{overflow:hidden}
 <path d="M100 30L132 36L158 35" fill="none" stroke="#1d2a50" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M94 64L142 66L156 92" fill="none" stroke="#2a3550" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M152 94L164 94" stroke="#111" stroke-width="6" stroke-linecap="round"/>
-<circle cx="100" cy="13" r="13" fill="#ffffff" stroke="#c4c9d0" stroke-width="2"/><path d="M88 9Q99 -3 112 6" fill="none" stroke="#111" stroke-width="6" stroke-linecap="round"/><path d="M104 7H114V17H106Z" fill="#333"/>
+<circle cx="100" cy="13" r="13" fill="#ffffff" stroke="#c4c9d0" stroke-width="2"/><path d="M88 9Q99 -3 112 6" fill="none" stroke="#111" stroke-width="6" stroke-linecap="round"/><path d="M104 7H114V17H106Z" fill="#f0c8a0"/><path d="M98 10.5H104" stroke="#111" stroke-width="1.6"/><path d="M103.5 8.5H115.5L114.5 14H105Z" fill="#0b0b0b" stroke="#000" stroke-width="1"/><path d="M106 9.5L109 9.5" stroke="#8ab" stroke-width="1"/>
 </svg></div>
 </section>
 <section class="screen hidden" id="endcard"><div id="endBox" style="display:flex;flex-direction:column;gap:14px"></div><button type="button" id="replayBtn">🔁 もう一度見る</button><button type="button" id="tinyBox" aria-label="箱" style="display:none">🎁</button></section>
@@ -457,6 +481,20 @@ body.locked{overflow:hidden}
     // deflate on 'お父さんより'
     this.piano(s(22.7),64,0.06,RB);this.piano(s(23.15),60,0.05,RB);this.boom(s(23.15),0.12,RB);
   };
+  // X-Trail drive-by: 4-cyl engine pass, U-turn rev, drift squeal, rev-off (times relative to the car slide)
+  P.car=function(t0,dest){var c=this.ctx,T=this.T,s=function(x){return t0+x*T},self=this;
+    var o=c.createOscillator(),o2=c.createOscillator();o.type='sawtooth';o2.type='square';o2.detune.value=-1200;
+    var f=o.frequency,f2=o2.frequency;[[0.3,70],[1.6,150],[2.3,95],[2.6,80],[3.2,170],[4.2,110],[4.9,140],[5.6,90],[6.7,160]].forEach(function(k,i){if(!i){f.setValueAtTime(k[1],s(k[0]));f2.setValueAtTime(k[1],s(k[0]))}else{f.exponentialRampToValueAtTime(k[1],s(k[0]));f2.exponentialRampToValueAtTime(k[1],s(k[0]))}});
+    var lp=c.createBiquadFilter();lp.type='lowpass';lp.Q.value=3;lp.frequency.setValueAtTime(500,s(0.3));lp.frequency.exponentialRampToValueAtTime(1600,s(1.6));lp.frequency.exponentialRampToValueAtTime(600,s(2.6));lp.frequency.exponentialRampToValueAtTime(1800,s(3.2));lp.frequency.exponentialRampToValueAtTime(700,s(5.6));lp.frequency.exponentialRampToValueAtTime(1500,s(6.7));
+    var g=c.createGain();g.gain.setValueAtTime(0.0001,s(0.2));g.gain.exponentialRampToValueAtTime(0.35,s(1.5));g.gain.exponentialRampToValueAtTime(0.08,s(2.5));g.gain.exponentialRampToValueAtTime(0.35,s(3.4));g.gain.setValueAtTime(0.3,s(5.4));g.gain.exponentialRampToValueAtTime(0.4,s(6.2));g.gain.exponentialRampToValueAtTime(0.0001,s(7.0));
+    var dst=g;if(c.createStereoPanner){var pn=c.createStereoPanner();pn.pan.setValueAtTime(-0.9,s(0.3));pn.pan.linearRampToValueAtTime(0.9,s(2.2));pn.pan.linearRampToValueAtTime(0,s(4.3));pn.pan.linearRampToValueAtTime(-0.9,s(6.9));g.connect(pn);dst=pn}
+    o.connect(lp);o2.connect(lp);lp.connect(g);dst.connect(dest||this.master);[o,o2].forEach(function(x){x.start(s(0.2));x.stop(s(7.1))});
+    // tire squeal during drift
+    var sq=c.createOscillator(),sg=c.createGain();sq.type='triangle';sq.frequency.setValueAtTime(1900,s(4.0));sq.frequency.linearRampToValueAtTime(2300,s(4.6));sq.frequency.linearRampToValueAtTime(1700,s(5.3));
+    var vb=c.createOscillator(),vg=c.createGain();vb.frequency.value=23;vg.gain.value=120;vb.connect(vg);vg.connect(sq.frequency);
+    sg.gain.setValueAtTime(0.0001,s(3.9));sg.gain.exponentialRampToValueAtTime(0.05,s(4.1));sg.gain.setValueAtTime(0.05,s(5.0));sg.gain.exponentialRampToValueAtTime(0.0001,s(5.5));sq.connect(sg);sg.connect(dest||this.master);[sq,vb].forEach(function(x){x.start(s(3.9));x.stop(s(5.6))});
+    this.noise(s(4.0),1.4*T,'bandpass',2500,1800,0.06);
+  };
   P.stopIntro=function(){var r=this._run;if(!r)return;try{var t=this.ctx.currentTime;r.gain.setValueAtTime(r.gain.value,t);r.gain.linearRampToValueAtTime(0.0001,t+0.08);setTimeout(function(){try{r.disconnect()}catch(e){}},150)}catch(e){}this._run=null};
   P.jingle=function(){var c=this.ctx,t=c.currentTime+0.03,self=this;[[72,0],[76,.09],[79,.18],[84,.27],[88,.42]].forEach(function(n){var o=c.createOscillator(),g=c.createGain();o.type='square';o.frequency.value=mtof(n[0]);g.gain.setValueAtTime(0.0001,t+n[1]);g.gain.linearRampToValueAtTime(0.04,t+n[1]+0.01);g.gain.linearRampToValueAtTime(0.0001,t+n[1]+0.16);o.connect(g);g.connect(self.bus);o.start(t+n[1]);o.stop(t+n[1]+0.2)});this.bell(t+0.42,100,0.03)};
   // ticket slide-up: soft chime, then silence
@@ -530,11 +568,13 @@ body.locked{overflow:hidden}
     {p:'img/p5.jpg',cap:'いつのまにか大人'},
     {card:'🎊そして現在🎊',sub:'≪NOW≫'},
     {p:'img/p8.jpg',cap:'そして今…<br>立派な22歳！！（たぶん）'},
-    {card:'💖感動をありがとう💖',sub:'しかし！！物語は<br>まだ終わらない……！！'}
+    {card:'💖感動をありがとう💖',sub:'しかし！！物語は<br>まだ終わらない……！！'},
+    {car:1,cap:'愛車は<br>黒のエクストレイル！！'}
   ];
-  var FX=['fx-zoom','fx-spin','fx-star','fx-swirl','fx-slide','fx-drop','fx-flip','fx-heart'],DUR={title:4.2,card:3.2,p:5.4};
-  var SHOW_END=(function(){var t=0.4,h='',fi=0;SEQ.forEach(function(it,i){it.at=t;var d=it.title?DUR.title:it.card?DUR.card:DUR.p;var fx=FX[fi++%FX.length];
+  var FX=['fx-zoom','fx-spin','fx-star','fx-swirl','fx-slide','fx-drop','fx-flip','fx-heart'],DUR={title:4.2,card:3.2,p:5.4,car:7.2};
+  var SHOW_END=(function(){var t=0.4,h='',fi=0;SEQ.forEach(function(it,i){it.at=t;var d=it.title?DUR.title:it.car?DUR.car:it.card?DUR.card:DUR.p;var fx=FX[fi++%FX.length];
     if(it.title)h+='<div class="slide title fx-zoom" id="sl'+i+'"><div class="wordart t1">✨AI思い出✨<br>ムービー</div><div class="wordart t2">～ゆうま 22年の軌跡～</div><div class="card-s">🎉 監督・制作：お父さん 🎉</div></div>';
+    else if(it.car)h+='<div class="slide fx-zoom carslide" id="sl'+i+'"><div class="wordart carcap">'+it.cap+'</div><div class="xcar" id="xcar">'+document.getElementById('carTpl').innerHTML+'</div></div>';
     else if(it.card)h+='<div class="slide '+fx+'" id="sl'+i+'"><div class="wordart card-t">'+it.card+'</div>'+(it.sub?'<div class="card-s">'+it.sub+'</div>':'')+'</div>';
     else h+='<div class="slide '+fx+'" id="sl'+i+'" style="--dur:'+d+'s"><div class="frame"><img src="'+it.p+'" alt=""></div><div class="wordart cap">'+it.cap+'</div></div>';
     t+=d});document.getElementById('slides').innerHTML=h;window.__SEQ=SEQ;return t})();
@@ -547,6 +587,10 @@ body.locked{overflow:hidden}
     try{ensureAudio();var m=window.__music;if(m){m.stopIntro();if(m.ctx.state==='suspended')m.ctx.resume();var t0=m.ctx.currentTime+0.05;m.intro(t0,SHOW_END-14.6,SEQ.map(function(x){return x.at}).concat([SHOW_END]))}}catch(e){console.log('audio unavailable',e)}
     var off=SHOW_END-14.6,o=off*1000;
     SEQ.forEach(function(it,i){ati(it.at*1000,function(){if(i)$('sl'+(i-1)).classList.add('out');$('sl'+i).classList.add('on');sparkles()})});
+    SEQ.forEach(function(it){if(!it.car)return;
+      ati((it.at+0.3+6.4*0.58)*1000,function(){carSmoke(1800*T)});
+      [0.3+6.4*0.25,0.3+6.4*0.66].forEach(function(x){ati((it.at+x)*1000,function(){var mm=$('movie');mm.classList.remove('shake');void mm.offsetWidth;mm.classList.add('shake')})});
+      try{var mc=window.__music;if(mc&&mc._run)mc.car(mc.ctx.currentTime+0.05+it.at*T,mc._run)}catch(e){console.log('car sfx',e)}});
     ati(SHOW_END*1000,function(){$('sl'+(SEQ.length-1)).classList.add('out');$('s6').classList.add('on');sparkles()});
     ati(15400+o,function(){$('bike').classList.add('go');$('road').classList.add('on');$('streaks').classList.add('on');smokeRun(3000*T)});
     [15600,16900].forEach(function(x){ati(x+o,function(){var m=$('movie');m.classList.remove('shake');void m.offsetWidth;m.classList.add('shake')})});
@@ -597,6 +641,11 @@ body.locked{overflow:hidden}
       at(3900,function(){hide('tricky');show('intro')});
       at(5400,startGift);}
   });
+  function carSmoke(dur){var mv=$('movie'),t0=Date.now(),n=0;var iv=setInterval(function(){var ck=document.getElementById('xcar');if(!ck||Date.now()-t0>dur||n>240){clearInterval(iv);return}
+      var r=ck.getBoundingClientRect(),mr=mv.getBoundingClientRect();for(var k=0;k<3;k++){n++;var e=document.createElement('div');e.className='smoke';
+        e.style.left=(r.right-mr.left-70+Math.random()*20)+'px';e.style.top=(r.bottom-mr.top-40+Math.random()*8)+'px';
+        e.style.setProperty('--dx',(40+Math.random()*90)+'px');e.style.setProperty('--dy',(-30-Math.random()*60)+'px');e.style.setProperty('--s',(2.4+Math.random()*2.6).toFixed(2));
+        mv.appendChild(e);(function(x){setTimeout(function(){x.remove()},1700)})(e)}},50);IT.push(iv)}
   function smokeRun(dur){var mv=$('movie'),bk=$('bike'),t0=Date.now(),n=0;
     var iv=setInterval(function(){if(Date.now()-t0>dur+300||n>300){clearInterval(iv);return}
       var r=bk.getBoundingClientRect(),mr=mv.getBoundingClientRect();

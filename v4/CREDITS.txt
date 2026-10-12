@@ -1,0 +1,20 @@
+YUMA BIRTHDAY v4 - music credits
+All compositions are in the public domain. All recordings below are marked Public Domain on Wikimedia Commons.
+Files bgm-main.mp3 / bgm-end.mp3 are excerpts, trimmed, crossfaded and level-adjusted with ffmpeg.
+
+1) Johann Pachelbel - Canon in D (arr. Frank Hudson)
+   Performance: United States Air Force Band, Strolling Strings (2004)
+   License: Public domain (work of the U.S. federal government)
+   Source: https://commons.wikimedia.org/wiki/File:Canon_(2004)_-_Strolling_Strings_-_United_States_Air_Force_Band.mp3
+   Used: gift open + hints (0-16s), soft continuation (36s-), ending track on ticket tap.
+
+2) Antonin Dvorak - Symphony No. 9 in E minor "From the New World", Op. 95, IV. Allegro con fuoco
+   License: Public domain (per Wikimedia Commons file page)
+   Source: https://commons.wikimedia.org/wiki/File:Antonin_Dvorak_-_symphony_no._9_in_e_minor_%27from_the_new_world%27,_op._95_-_iv._allegro_con_fuoco.ogg
+   Used: darkening / "そして――" build (15-21.6s) and main entry on YOASOBI (21.6s).
+
+3) Gustav Holst - The Planets, Op. 32, IV. Jupiter, the Bringer of Jollity
+   Performance: United States Air Force Band
+   License: Public domain (work of the U.S. federal government)
+   Source: https://commons.wikimedia.org/wiki/File:Holst_The_Planets_Jupiter.ogg
+   Used: 2 TICKETS climax (25.7-38s), hymn section.

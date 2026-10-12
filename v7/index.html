@@ -227,6 +227,7 @@ body.locked{overflow:hidden}
 <div id="bg"></div>
 <div id="halo"></div>
 <canvas id="confetti"></canvas>
+<audio id="bgmA" src="bgm_intro.mp3" preload="auto" playsinline webkit-playsinline></audio>
 <button type="button" id="muteBtn" aria-label="音楽をミュート">🔊</button>
 
 <section class="screen" id="pre">
@@ -585,7 +586,7 @@ body.locked{overflow:hidden}
       function w(o,s){for(var i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))}w(0,'RIFF');v.setUint32(4,36+n*4,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,2,true);v.setUint32(24,sr,true);v.setUint32(28,sr*4,true);v.setUint16(32,4,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*4,true);
       var peak=0;for(var i=0;i<n;i++){peak=Math.max(peak,Math.abs(L[i]),Math.abs(R[i]));v.setInt16(44+i*4,Math.max(-1,Math.min(1,L[i]))*32767,true);v.setInt16(46+i*4,Math.max(-1,Math.min(1,R[i]))*32767,true)}
       var bytes=new Uint8Array(ab),str='';for(var j=0;j<bytes.length;j+=32768)str+=String.fromCharCode.apply(null,bytes.subarray(j,j+32768));return {b64:btoa(str),peak:peak}})};
-  window.__renderIntro=function(total){var sr=44100,c=new OfflineAudioContext(2,sr*total,sr),m=new Music(c,1);m.intro(0,window.__OFF||0,window.__STARTS);
+  window.__renderIntro=function(total){var sr=44100,c=new OfflineAudioContext(2,sr*total,sr),m=new Music(c,1);m.intro(0,window.__OFF||0,window.__STARTS);if(window.__CAR!=null)m.car(window.__CAR,m._run);
     return c.startRendering().then(function(buf){var n=buf.length,L=buf.getChannelData(0),R=buf.getChannelData(1),ab=new ArrayBuffer(44+n*4),v=new DataView(ab);
       function w(o,s){for(var i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i))}w(0,'RIFF');v.setUint32(4,36+n*4,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,2,true);v.setUint32(24,sr,true);v.setUint32(28,sr*4,true);v.setUint16(32,4,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*4,true);
       var peak=0;for(var i=0;i<n;i++){peak=Math.max(peak,Math.abs(L[i]),Math.abs(R[i]));v.setInt16(44+i*4,Math.max(-1,Math.min(1,L[i]))*32767,true);v.setInt16(46+i*4,Math.max(-1,Math.min(1,R[i]))*32767,true)}
@@ -626,7 +627,7 @@ body.locked{overflow:hidden}
 
   function ensureAudio(){
     var GM=window.GiftMusic;if(window.__music||!GM||!GM.AC)return;
-    try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}var ac=new GM.AC();window.__music=new GM.Music(ac,T);if(ac.state==='suspended'&&ac.resume)ac.resume();
+    try{if(navigator.audioSession&&navigator.audioSession.type!=='playback')navigator.audioSession.type='playback'}catch(e){console.log('audioSession n/a')}var ac;try{ac=new GM.AC()}catch(e){console.log('no AC',e);return}window.__music=new GM.Music(ac,T);if(ac.state==='suspended'&&ac.resume)ac.resume();
     console.log('audio context created: '+ac.state);$('muteBtn').classList.add('on');
   }
   // ---- v7 intro: data-driven. Add photos by adding {p:'img/xx.jpg',cap:'...'} entries ----
@@ -659,16 +660,31 @@ body.locked{overflow:hidden}
   // ---- v6 intro ----
   var played=false;
   var IT=[],wigIv=null;function ati(ms,fn){IT.push(setTimeout(fn,ms*T))}
-  var preJ=false;$('pre').addEventListener('pointerdown',function(e){if(preJ||e.target.id==='playBtn')return;preJ=true;try{ensureAudio();var m=window.__music;if(m){if(m.ctx.state==='suspended')m.ctx.resume();m.jingle()}}catch(x){}});
+  var preJ=false;$('pre').addEventListener('click',function(e){if(preJ||e.target.id==='playBtn')return;preJ=true;try{unlockAudio();var m=window.__music;if(m)m.jingle()}catch(x){}});
+  function unlockAudio(){
+    try{ensureAudio();var m=window.__music;if(!m)return;var c=m.ctx;
+      if(c.state!=='running'){try{var pr=c.resume();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}
+      var b=c.createBuffer(1,1,22050),src=c.createBufferSource();src.buffer=b;src.connect(c.destination);src.start(0);
+    }catch(e){console.log('unlock failed',e)}
+  }
+  window.__unlockAudio=unlockAudio;
+  function webAudioIntro(){ // fallback when <audio> can't play: schedule only after resume resolves
+    try{var m=window.__music;if(!m)return;var go=function(){m.stopIntro();var t0=m.ctx.currentTime+0.08;m.intro(t0,SHOW_END-14.6,SEQ.map(function(x){return x.at}).concat([SHOW_END]));
+      SEQ.forEach(function(it){if(it.car&&m._run)m.car(t0+it.at*T,m._run)});console.log('webaudio intro fallback, state='+m.ctx.state)};
+      if(m.ctx.state==='running')go();else m.ctx.resume().then(go,function(e){console.log('resume failed',e)});}catch(e){console.log('fallback failed',e)}
+  }
   function runIntro(){
     IT.forEach(clearTimeout);IT=[];if(wigIv){clearInterval(wigIv);wigIv=null}
-    try{ensureAudio();var m=window.__music;if(m){m.stopIntro();if(m.ctx.state==='suspended')m.ctx.resume();var t0=m.ctx.currentTime+0.05;m.intro(t0,SHOW_END-14.6,SEQ.map(function(x){return x.at}).concat([SHOW_END]))}}catch(e){console.log('audio unavailable',e)}
+    unlockAudio();try{if(window.__music)window.__music.stopIntro()}catch(e){}
+    var A=$('bgmA'),useWA=!A||!A.play||T!==1;
+    if(!useWA){try{A.pause();try{A.currentTime=0}catch(e){}A.muted=!!muted;var pp=A.play();if(pp&&pp.then)pp.then(function(){console.log('bgm <audio> playing')},function(e){console.log('bgm <audio> failed',e);webAudioIntro()})}catch(e){console.log('bgm el error',e);webAudioIntro()}}
+    else webAudioIntro();
     var off=SHOW_END-14.6,o=off*1000;
     SEQ.forEach(function(it,i){ati(it.at*1000,function(){if(i)$('sl'+(i-1)).classList.add('out');$('sl'+i).classList.add('on');sparkles()})});
     SEQ.forEach(function(it){if(!it.car)return;
       ati((it.at+0.3+6.4*0.58)*1000,function(){carSmoke(1800*T)});
       [0.3+6.4*0.25,0.3+6.4*0.66].forEach(function(x){ati((it.at+x)*1000,function(){var mm=$('movie');mm.classList.remove('shake');void mm.offsetWidth;mm.classList.add('shake')})});
-      try{var mc=window.__music;if(mc&&mc._run)mc.car(mc.ctx.currentTime+0.05+it.at*T,mc._run)}catch(e){console.log('car sfx',e)}});
+});
     ati(SHOW_END*1000,function(){$('sl'+(SEQ.length-1)).classList.add('out');$('s6').classList.add('on');sparkles()});
     ati(15400+o,function(){$('bike').classList.add('go');$('road').classList.add('on');$('streaks').classList.add('on');smokeRun(3000*T)});
     [15600,16900].forEach(function(x){ati(x+o,function(){var m=$('movie');m.classList.remove('shake');void m.offsetWidth;m.classList.add('shake')})});
@@ -684,10 +700,11 @@ body.locked{overflow:hidden}
       wigIv=setInterval(function(){if(taps)return;tb.classList.remove('wig');void tb.offsetWidth;tb.classList.add('wig')},11000)});
   }
   var played=false;
-  $('playBtn').addEventListener('click',function(){
-    if(played)return;played=true;this.disabled=true;
-    hide('pre');show('movie');runIntro();
-  });
+  function startPlay(e){
+    if(played)return;played=true;$('playBtn').disabled=true;if(e&&e.type==='touchend'&&e.cancelable)e.preventDefault();
+    runIntro();hide('pre');show('movie');
+  }
+  $('playBtn').addEventListener('touchend',startPlay);$('playBtn').addEventListener('click',startPlay);
   var rpLock=false;
   $('replayBtn').addEventListener('click',function(){
     if(rpLock||opened||taps>7)return;rpLock=true;setTimeout(function(){rpLock=false},800);
@@ -783,7 +800,7 @@ body.locked{overflow:hidden}
   });
   var muted=false;
   $('muteBtn').addEventListener('click',function(){muted=!muted;this.textContent=muted?'🔇':'🔊';this.setAttribute('aria-label',muted?'音楽を再生':'音楽をミュート');
-    try{if(window.__music)window.__music.setMuted(muted)}catch(e){}});
+    try{if(window.__music)window.__music.setMuted(muted)}catch(e){}try{$('bgmA').muted=muted}catch(e){}});
   $('infoBtn').addEventListener('click',function(){
     var b=$('infoBody'),o=b.classList.toggle('open');
     this.setAttribute('aria-expanded',o);this.textContent='チケットの受け取りについて '+(o?'∨':'＞');

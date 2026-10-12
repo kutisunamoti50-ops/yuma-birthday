@@ -244,52 +244,130 @@ body.locked{overflow:hidden}
   <div class="glitter"></div>
   <div class="badge">✨ Powered by AI ✨</div>
   <div id="slides"></div><template id="carTpl"><svg class="xsvg" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" overflow="visible">
-<!-- generic black compact SUV (X-Trail T32-like silhouette), illustration, no logos -->
-<path d="M14 92Q12 70 30 66L70 60Q92 34 120 28L220 26Q240 26 254 40L280 62Q306 66 308 84L308 100Q308 106 300 106H22Q14 106 14 98Z" fill="#111317" stroke="#000" stroke-width="2"/>
-<path d="M24 70L72 63Q94 38 120 32L220 30Q236 30 248 42L270 62" fill="none" stroke="#3a3f48" stroke-width="2"/>
-<path d="M118 22L232 21" stroke="#9aa1aa" stroke-width="4" stroke-linecap="round"/><path d="M130 22V28M220 21V27" stroke="#9aa1aa" stroke-width="3"/><path d="M140 21V12M210 20V11" stroke="#222" stroke-width="4"/><path d="M128 12H226" stroke="#333" stroke-width="3"/><rect x="104" y="1" width="140" height="9" rx="4.5" fill="#00c2ff" stroke="#000" stroke-width="1.5"/><path d="M118 5.5H230" stroke="#ff3cac" stroke-width="3"/><rect x="112" y="-8" width="128" height="8" rx="4" fill="#ffd400" stroke="#000" stroke-width="1.5"/><path d="M126 -4H226" stroke="#7a00ff" stroke-width="2.5" stroke-dasharray="10 6"/><path d="M146 -9V13M204 -9V13" stroke="#111" stroke-width="3"/>
-<path d="M84 60Q100 38 122 34L176 33V60Z" fill="#2b3a4c"/><path d="M182 33L222 33Q236 34 246 46L258 60H182Z" fill="#2b3a4c"/>
-<path d="M90 56Q104 40 122 37L150 36" fill="none" stroke="#6f8aa6" stroke-width="2" opacity=".6"/>
-<g class="driver"><circle cx="208" cy="46" r="9" fill="#e3b892"/><path d="M199 43Q206 34 216 40L216 43H199Z" fill="#222"/><path d="M203 44.5H217L216 49H205Z" fill="#000"/><path d="M196 45H203" stroke="#000" stroke-width="1.5"/><path d="M206 45.5L209 45.5" stroke="#8ab" stroke-width="1"/><path d="M196 55Q208 52 220 60H196Z" fill="#333"/><circle cx="234" cy="54" r="6" fill="none" stroke="#111" stroke-width="2.5"/></g>
-<path d="M178 33V100M100 62H290" stroke="#000" stroke-width="1.5" opacity=".6"/>
-<path d="M140 68H156M206 68H222" stroke="#c8ccd2" stroke-width="3" stroke-linecap="round"/>
-<path d="M30 80Q160 74 296 78" stroke="#c8ccd2" stroke-width="1.5" fill="none" opacity=".5"/>
-<path d="M286 66Q300 70 306 80L306 88Q296 84 284 84Z" fill="#c8ccd2"/><path d="M290 70L304 80M288 76L304 86" stroke="#7d848c" stroke-width="1.5"/>
-<path d="M276 62Q290 62 300 70L292 72Q282 66 274 66Z" fill="#e8f2ff"/><path d="M16 70L28 68L28 80L16 82Z" fill="#c4161c"/>
-<path d="M14 100H308" stroke="#3b3f46" stroke-width="12"/><path d="M40 108A32 32 0 0 1 104 108M220 108A32 32 0 0 1 284 108" fill="none" stroke="#3b3f46" stroke-width="7"/>
-<path d="M44 106A28 28 0 0 1 100 106M224 106A28 28 0 0 1 280 106" fill="#000"/>
-<g class="wheel"><circle cx="72" cy="108" r="24" fill="#151515"/><circle cx="72" cy="108" r="14" fill="#9aa1aa"/><path d="M72 94V122M58 108H86M62 98L82 118M82 98L62 118" stroke="#555" stroke-width="3"/><circle cx="72" cy="108" r="4" fill="#ddd"/></g>
-<g class="wheel"><circle cx="252" cy="108" r="24" fill="#151515"/><circle cx="252" cy="108" r="14" fill="#9aa1aa"/><path d="M252 94V122M238 108H266M242 98L262 118M262 98L242 118" stroke="#555" stroke-width="3"/><circle cx="252" cy="108" r="4" fill="#ddd"/></g>
+<defs>
+<linearGradient id="xp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a505a"/><stop offset=".18" stop-color="#15181d"/><stop offset=".42" stop-color="#2c3139"/><stop offset=".47" stop-color="#8a929e"/><stop offset=".5" stop-color="#1a1d22"/><stop offset=".8" stop-color="#07080a"/><stop offset="1" stop-color="#22262c"/></linearGradient>
+<linearGradient id="xg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3d5266"/><stop offset=".45" stop-color="#121a24"/><stop offset=".55" stop-color="#2a3a4c"/><stop offset="1" stop-color="#05080c"/></linearGradient>
+<linearGradient id="xr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6f8"/><stop offset=".5" stop-color="#9aa2ac"/><stop offset="1" stop-color="#5b626b"/></linearGradient>
+<radialGradient id="xw" cx=".45" cy=".4" r=".6"><stop offset="0" stop-color="#f2f4f6"/><stop offset=".7" stop-color="#a9b0b8"/><stop offset="1" stop-color="#5c636b"/></radialGradient>
+<linearGradient id="xh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8fa3b8"/><stop offset=".6" stop-color="#f4f9ff"/><stop offset="1" stop-color="#cfe0f0"/></linearGradient>
+<linearGradient id="sb1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff2d7a"/><stop offset=".5" stop-color="#ffb000"/><stop offset="1" stop-color="#ff2d7a"/></linearGradient>
+<linearGradient id="sb2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00b7ff"/><stop offset=".5" stop-color="#7cf5ff"/><stop offset="1" stop-color="#2b5bff"/></linearGradient>
+<g id="xwheel"><circle r="30" fill="#0e0e10"/><circle r="27" fill="none" stroke="#2a2a2e" stroke-width="2"/><circle r="21.5" fill="url(#xw)"/>
+<g fill="#2a2e34"><path id="xs" d="M-2.2 -6L-3.5 -20H3.5L2.2 -6Z"/><use href="#xs" transform="rotate(72)"/><use href="#xs" transform="rotate(144)"/><use href="#xs" transform="rotate(216)"/><use href="#xs" transform="rotate(288)"/></g>
+<g fill="#e6eaee" opacity=".9"><path id="xs2" d="M-.6 -6.5L-1.4 -19.5H1.4L.6 -6.5Z" transform="rotate(36)"/><use href="#xs2" transform="rotate(72)"/><use href="#xs2" transform="rotate(144)"/><use href="#xs2" transform="rotate(216)"/><use href="#xs2" transform="rotate(288)"/></g>
+<circle r="6.5" fill="#cfd5db" stroke="#555" stroke-width="1"/><circle r="2.5" fill="#333"/></g>
+</defs>
+<!-- roof rack + two snowboards -->
+<path d="M70 26V14M196 24V12" stroke="#1b1d21" stroke-width="4"/>
+<path d="M58 14H210" stroke="#26292e" stroke-width="3.5" stroke-linecap="round"/>
+<rect x="44" y="4" width="176" height="8" rx="4" fill="url(#sb2)" stroke="#0a0a0a" stroke-width="1.2"/><path d="M56 6.5H208" stroke="#fff" stroke-width="1" opacity=".6"/>
+<rect x="50" y="-5" width="166" height="8" rx="4" fill="url(#sb1)" stroke="#0a0a0a" stroke-width="1.2"/><path d="M62 -2.5H204" stroke="#fff" stroke-width="1" opacity=".6"/>
+<path d="M92 -6V14M176 -6V14" stroke="#111" stroke-width="3.5"/>
+<!-- body -->
+<path d="M14 116L12 92Q11 74 20 62L36 34Q40 27 50 26L184 24Q198 24 206 30L240 56Q252 60 286 66Q304 70 310 82L312 100Q312 112 304 116Z" fill="url(#xp)" stroke="#000" stroke-width="1.2"/>
+<!-- roof rail -->
+<path d="M44 27Q48 23 58 23L186 21Q196 21 202 25" fill="none" stroke="url(#xr)" stroke-width="3.6" stroke-linecap="round"/>
+<!-- greenhouse: tinted glass with upward kick at C-pillar -->
+<path d="M30 52L42 34Q45 31 52 31L182 29Q194 29 202 35L234 58L104 60L84 58Q66 56 56 50Z" fill="url(#xg)" stroke="#000" stroke-width="1"/>
+<!-- blacked pillars (floating roof) -->
+<path d="M56 31L66 31L82 57L72 56Z" fill="#050607"/>
+<path d="M140 30H148V60H140Z" fill="#050607"/>
+<path d="M30 52L42 34L48 33L40 52Z" fill="#050607"/>
+<!-- chrome window trim -->
+<path d="M30 53Q46 52 58 51Q74 58 104 61L235 59" fill="none" stroke="#dfe3e8" stroke-width="1.6"/>
+<!-- glass reflections -->
+<path d="M160 32L176 32L150 58L136 58Z" fill="#fff" opacity=".12"/><path d="M96 32L104 32L84 56L78 56Z" fill="#fff" opacity=".1"/>
+<!-- driver -->
+<g class="driver"><path d="M168 60Q170 47 182 46Q194 46 196 60Z" fill="#1d1f23"/><ellipse cx="185" cy="42" rx="7.5" ry="8.5" fill="#d9a882"/><path d="M177 39Q181 31 191 34Q194 37 193 40L178 41Z" fill="#1a1a1a"/>
+<path d="M181 39.5H193.5L192.8 44H183Z" fill="#050505"/><path d="M176 40.5H181.5" stroke="#050505" stroke-width="1.2"/><path d="M184 40.5H187" stroke="#9ab" stroke-width=".7"/>
+<circle cx="208" cy="50" r="6" fill="none" stroke="#0a0a0a" stroke-width="2.4"/></g>
+<!-- shoulder / character lines + reflection -->
+<path d="M16 72Q120 64 300 74" fill="none" stroke="#9aa3ae" stroke-width="1" opacity=".55"/>
+<path d="M30 70Q140 63 280 70L278 73Q140 67 32 74Z" fill="#fff" opacity=".18"/>
+<path d="M20 96Q150 92 306 94" fill="none" stroke="#000" stroke-width="1.2" opacity=".7"/>
+<!-- door seams + handles -->
+<path d="M144 60V108M84 60Q86 84 88 108" fill="none" stroke="#000" stroke-width="1" opacity=".8"/>
+<path d="M120 70H131M184 70H195" stroke="#c9ced5" stroke-width="2.2" stroke-linecap="round"/>
+<!-- mirror -->
+<path d="M226 56L238 54Q242 58 238 62L228 62Z" fill="#111" stroke="#333" stroke-width=".8"/>
+<!-- swept-back headlight + V-motion grille + fog -->
+<path d="M262 66Q290 68 306 77L300 80Q284 74 260 70Z" fill="url(#xh)" stroke="#333" stroke-width=".8"/>
+<path d="M300 80Q308 84 311 92L307 96Q303 88 297 84Z" fill="#c9ced5"/><path d="M296 82Q305 86 309 100" fill="none" stroke="#f5f7fa" stroke-width="1.6"/>
+<path d="M300 104H310" stroke="#d8dde2" stroke-width="2"/>
+<!-- rear lamp -->
+<path d="M13 76L22 72L24 86L13 88Z" fill="#c4111a"/><path d="M15 77L21 75L21 80L15 82Z" fill="#ff6a6a" opacity=".8"/>
+<!-- black cladding: lower sill + arches -->
+<path d="M14 110H312L310 120H16Z" fill="#141518"/>
+<path d="M40 116A40 40 0 0 1 118 116L112 116A34 34 0 0 0 46 116Z" fill="#141518"/>
+<path d="M214 116A40 40 0 0 1 292 116L286 116A34 34 0 0 0 220 116Z" fill="#141518"/>
+<path d="M46 116A34 34 0 0 1 112 116Z" fill="#000"/><path d="M220 116A34 34 0 0 1 286 116Z" fill="#000"/>
+<g class="wheel"><g transform="translate(79 112)"><use href="#xwheel"/></g></g>
+<g class="wheel"><g transform="translate(253 112)"><use href="#xwheel"/></g></g>
 </svg></template>
   <div class="slide fx-zoom" id="s6"><div class="wordart bikecap">そして…<br>ドラッグスター好きに<br>育ちました！！</div></div>
   <div id="streaks"></div><div id="road"></div>
 <div id="bike" aria-hidden="true"><div class="shadow"></div><div class="speed"></div><div class="wordart brr">BOOOON!!</div><div class="puff">💨</div>
-<svg viewBox="0 0 270 135" xmlns="http://www.w3.org/2000/svg" overflow="visible"><defs><filter id="mb" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.6 0.3"/></filter></defs>
-<!-- generic cruiser silhouette (DragStar-400-like: white teardrop tank, chrome V-twin); no logos -->
-<path d="M18 96Q22 66 58 70L74 80" fill="none" stroke="#9aa3ad" stroke-width="10" stroke-linecap="round"/><path d="M18 96Q22 66 58 70L74 80" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
-<g class="wheel" filter="url(#mb)"><circle cx="50" cy="104" r="27" fill="#1a1a1a"/><circle cx="50" cy="104" r="20" fill="none" stroke="#e6e9ee" stroke-width="2.5"/>
-<path d="M50 84V124M30 104H70M36 90L64 118M64 90L36 118M42 85L58 123M31 96L69 112" stroke="#cfd5dc" stroke-width="1.3"/><circle cx="50" cy="104" r="5" fill="#eee"/></g>
-<g class="wheel" filter="url(#mb)"><circle cx="214" cy="104" r="27" fill="#1a1a1a"/><circle cx="214" cy="104" r="20" fill="none" stroke="#e6e9ee" stroke-width="2.5"/>
-<path d="M214 84V124M194 104H234M200 90L228 118M228 90L200 118M206 85L222 123M195 96L233 112" stroke="#cfd5dc" stroke-width="1.3"/><circle cx="214" cy="104" r="5" fill="#eee"/></g>
-<path d="M50 104L84 92H150L176 66M84 92L102 72H176" fill="none" stroke="#111" stroke-width="6" stroke-linejoin="round"/>
-<path d="M188 50L214 104" stroke="#cfd5dc" stroke-width="6" stroke-linecap="round"/>
-<path d="M60 112H150Q160 112 164 104" fill="none" stroke="#e9edf2" stroke-width="5" stroke-linecap="round"/>
-<path d="M58 118H146Q158 118 166 108" fill="none" stroke="#c9d0d8" stroke-width="5" stroke-linecap="round"/>
-<path d="M150 112L166 104" stroke="#e9edf2" stroke-width="4"/>
-<g fill="#dfe4ea" stroke="#9aa3ad" stroke-width="1.5"><path d="M118 98L104 70L120 64L134 92Z"/><path d="M134 98L148 70L164 76L150 100Z"/></g>
-<g stroke="#9aa3ad" stroke-width="1.2"><path d="M108 76L124 70M110 81L126 75M112 86L128 80M150 76L162 80M148 81L160 85M146 86L158 90"/></g>
-<circle cx="134" cy="100" r="9" fill="#cfd5dc" stroke="#8a939d" stroke-width="1.5"/>
-<path d="M118 60Q140 42 172 50Q182 54 176 62Q150 68 118 66Z" fill="#ffffff" stroke="#cfd5dc" stroke-width="2"/>
-<path d="M126 58Q146 50 166 54" fill="none" stroke="#e8ebef" stroke-width="2"/>
-<path d="M64 70Q72 60 92 62Q104 64 118 62L118 68Q100 72 88 72L70 76Z" fill="#141414"/>
-<path d="M58 66Q60 56 72 60L74 70Z" fill="#141414"/>
-<path d="M188 50L170 34L158 36" fill="none" stroke="#dfe4ea" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="196" cy="54" r="8" fill="#fff7c2" stroke="#cfd5dc" stroke-width="3"/>
-<path d="M92 62L98 26" fill="none" stroke="#1d2a50" stroke-width="13" stroke-linecap="round"/>
-<path d="M100 30L132 36L158 35" fill="none" stroke="#1d2a50" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M94 64L142 66L156 92" fill="none" stroke="#2a3550" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M152 94L164 94" stroke="#111" stroke-width="6" stroke-linecap="round"/>
-<circle cx="100" cy="13" r="13" fill="#ffffff" stroke="#c4c9d0" stroke-width="2"/><path d="M88 9Q99 -3 112 6" fill="none" stroke="#111" stroke-width="6" stroke-linecap="round"/><path d="M104 7H114V17H106Z" fill="#f0c8a0"/><path d="M98 10.5H104" stroke="#111" stroke-width="1.6"/><path d="M103.5 8.5H115.5L114.5 14H105Z" fill="#0b0b0b" stroke="#000" stroke-width="1"/><path d="M106 9.5L109 9.5" stroke="#8ab" stroke-width="1"/>
+<svg viewBox="0 0 270 135" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+<defs>
+<linearGradient id="bc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#b9c0c8"/><stop offset=".55" stop-color="#f7f9fb"/><stop offset="1" stop-color="#7c848d"/></linearGradient>
+<linearGradient id="bt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#eef0f3"/><stop offset="1" stop-color="#b8bec6"/></linearGradient>
+<linearGradient id="bs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3a3e"/><stop offset="1" stop-color="#0c0c0e"/></linearGradient>
+<linearGradient id="be" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8dde2"/><stop offset=".5" stop-color="#6d747c"/><stop offset="1" stop-color="#c3c9cf"/></linearGradient>
+<linearGradient id="bj" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b4766"/><stop offset="1" stop-color="#151b2e"/></linearGradient>
+<g id="bw"><circle r="27" fill="#101012"/><circle r="22" fill="none" stroke="#2b2b2f" stroke-width="2"/><circle r="19.5" fill="none" stroke="url(#bc)" stroke-width="2.6"/>
+<g stroke="#d4d9de" stroke-width=".8"><path d="M0 -19V19M-19 0H19M-13.4 -13.4L13.4 13.4M13.4 -13.4L-13.4 13.4M-7.3 -17.6L7.3 17.6M7.3 -17.6L-7.3 17.6M-17.6 -7.3L17.6 7.3M17.6 -7.3L-17.6 7.3"/></g>
+<circle r="5.5" fill="url(#bc)" stroke="#666" stroke-width=".8"/></g>
+</defs>
+<!-- white rear fender (bobbed, wide) -->
+<path d="M18 100Q16 70 46 66Q66 66 78 80L72 86Q62 74 46 74Q26 76 26 100Z" fill="url(#bt)" stroke="#9aa3ad" stroke-width="1"/>
+<path d="M14 92L20 92" stroke="#c4111a" stroke-width="4"/>
+<g class="wheel"><g transform="translate(46 104)"><use href="#bw"/></g></g>
+<g class="wheel"><g transform="translate(218 104)"><circle r="28.5" fill="#101012"/><use href="#bw"/></g></g>
+<!-- frame -->
+<path d="M46 104L92 96L150 98M92 96L104 70L176 52M150 98L176 52" fill="none" stroke="#141414" stroke-width="4.5" stroke-linejoin="round"/>
+<!-- rear shock -->
+<path d="M70 78L84 96" stroke="#888" stroke-width="4"/><path d="M71 80L83 94" stroke="#e5e8eb" stroke-width="2" stroke-dasharray="2 1.5"/>
+<!-- V-twin engine with fins -->
+<g>
+<path d="M112 98L100 70L120 64L132 92Z" fill="#8e969f"/><path d="M134 92L150 66L168 74L150 100Z" fill="#8e969f"/>
+<g stroke="#444a50" stroke-width="1.3"><path d="M103 74L121 68M104.5 78L123 72M106 82L125 76M107.5 86L127 80M109 90L129 84"/><path d="M152 68L166 75M150 72L164 79M148 76L162 83M146 80L160 87M144 84L158 91"/></g>
+<path d="M100 70L120 64L118 60L98 66Z" fill="url(#bc)"/><path d="M150 66L168 74L171 70L153 62Z" fill="url(#bc)"/>
+<path d="M108 98Q120 88 134 92Q150 96 152 106L112 108Z" fill="url(#be)" stroke="#555" stroke-width=".8"/>
+<circle cx="128" cy="101" r="7" fill="url(#bc)" stroke="#666" stroke-width=".8"/>
+</g>
+<!-- staggered twin chrome mufflers (right side) -->
+<path d="M150 82Q160 90 150 106L56 108" fill="none" stroke="url(#bc)" stroke-width="6" stroke-linecap="round"/>
+<path d="M112 76Q102 86 100 98L24 104" fill="none" stroke="url(#bc)" stroke-width="5.5"/>
+<path d="M56 108H18" stroke="url(#bc)" stroke-width="7" stroke-linecap="round"/><path d="M60 100H30" stroke="url(#bc)" stroke-width="6.5" stroke-linecap="round"/>
+<path d="M22 106H50M34 102H56" stroke="#fff" stroke-width="1.2" opacity=".8"/>
+<!-- low stepped seat -->
+<path d="M58 62Q66 56 82 60L86 68L62 70Z" fill="url(#bs)"/>
+<path d="M82 66Q88 58 104 60Q118 62 124 60L122 70Q104 74 86 72Z" fill="url(#bs)"/>
+<!-- teardrop white tank with chrome trim -->
+<path d="M120 60Q136 42 166 46Q182 50 178 58Q158 66 122 66Z" fill="url(#bt)" stroke="#a9b1ba" stroke-width="1"/>
+<path d="M128 52Q148 44 170 49" fill="none" stroke="#fff" stroke-width="2.2"/>
+<path d="M130 62Q152 58 172 57" fill="none" stroke="url(#bc)" stroke-width="2"/>
+<!-- front fork (chrome), NO front fender -->
+<path d="M180 46L218 104" stroke="url(#bc)" stroke-width="6.5" stroke-linecap="round"/>
+<path d="M184 44L210 84" stroke="#2a2a2a" stroke-width="2" opacity=".5"/>
+<!-- round chrome headlight -->
+<circle cx="194" cy="50" r="9" fill="url(#bc)" stroke="#6d747c" stroke-width="1.2"/><circle cx="198" cy="50" r="6" fill="#fff9d6"/><path d="M196 46Q200 46 202 49" stroke="#fff" stroke-width="1.4" fill="none"/>
+<!-- wide pulled-back handlebar -->
+<path d="M180 44L176 30Q172 24 160 26" fill="none" stroke="url(#bc)" stroke-width="3.6" stroke-linecap="round"/>
+<path d="M160 26L154 27" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<!-- forward footpeg -->
+<path d="M160 96H170" stroke="#222" stroke-width="4" stroke-linecap="round"/>
+<!-- rider: relaxed cruiser posture -->
+<path d="M96 60Q90 36 100 24" fill="none" stroke="url(#bj)" stroke-width="15" stroke-linecap="round"/>
+<path d="M100 28Q122 32 136 30L155 27" fill="none" stroke="url(#bj)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M96 64Q120 66 140 70L162 92" fill="none" stroke="#2a3550" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M158 94L172 94" stroke="#151515" stroke-width="6" stroke-linecap="round"/>
+<!-- helmet (white, black center stripe) + Ray-Ban-style shades -->
+<circle cx="102" cy="11" r="12.5" fill="url(#bt)" stroke="#aeb5bd" stroke-width="1.2"/>
+<path d="M91 6Q101 -4 113 4" fill="none" stroke="#0c0c0c" stroke-width="5.5" stroke-linecap="round"/>
+<path d="M106 6Q112 8 114 14Q114 20 108 20L104 18Z" fill="#e8b994"/>
+<path d="M100 9.5H106" stroke="#0a0a0a" stroke-width="1.5"/><path d="M105.5 7.6H116L115 13H107Z" fill="#050505"/><path d="M108 8.8H111" stroke="#8ab" stroke-width=".9"/>
+<path d="M95 18Q100 22 106 19" fill="none" stroke="#333" stroke-width="1"/>
 </svg></div>
 </section>
 <section class="screen hidden" id="endcard"><div id="endBox" style="display:flex;flex-direction:column;gap:14px"></div><button type="button" id="replayBtn">🔁 もう一度見る</button><button type="button" id="tinyBox" aria-label="箱" style="display:none">🎁</button></section>
